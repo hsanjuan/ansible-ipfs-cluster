@@ -1,0 +1,7 @@
+- hosts: ipfs
+  roles:
+    - ipfs
+  vars:
+    dist_url: https://dist.ipfs.io
+    ipfs_version: v0.4.7
+    ipfs_arch: arm

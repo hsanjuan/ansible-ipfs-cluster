@@ -1,0 +1,81 @@
+- name: create download folder for go-ipfs
+  become: yes
+  file:
+    state: directory
+    owner: root
+    group: root
+    dest: /opt/go-ipfs/{{ipfs_version}}
+
+- name: download and unpack go-ipfs
+  become: yes
+  unarchive:
+    remote_src: yes
+    src: "{{ dist_url }}/go-ipfs/{{ipfs_version}}/go-ipfs_{{ipfs_version}}_linux-{{ipfs_arch}}.tar.gz"
+    dest: /opt/go-ipfs/{{ipfs_version}}
+    creates: /opt/go-ipfs/{{ipfs_version}}/go-ipfs
+
+- name: link go-ipfs executable
+  become: yes
+  file:
+    state: link
+    owner: root
+    group: root
+    dest: /usr/local/bin/ipfs
+    src: /opt/go-ipfs/{{ipfs_version}}/go-ipfs/ipfs
+
+
+- name: install ipfs init service
+  become: yes
+  copy:
+    src: etc/systemd/system/ipfs.service
+    dest: /etc/systemd/system/ipfs.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: reload systemd
+  become: yes
+  shell: systemctl daemon-reload
+
+- name: make ipfs group
+  become: yes
+  group:
+    state: present
+    name: ipfs
+
+- name: make ipfs user
+  become: yes
+  user:
+    state: present
+    name: ipfs
+    group: ipfs
+    shell: /bin/bash
+    home: /home/ipfs
+    comment: IPFS user
+    system: yes
+
+- name: copy default config
+  become: yes
+  become_user: ipfs
+  template:
+    src: home/ipfs/ipfs_default_config
+    dest: /home/ipfs/ipfs_default_config
+    owner: ipfs
+    group: ipfs
+    mode: 0644
+  notify:
+    - restart ipfs
+
+- name: init IPFS
+  become: yes
+  become_user: ipfs
+  command: ipfs init --empty-repo -- /home/ipfs/ipfs_default_config
+  args:
+    creates: /home/ipfs/.ipfs/config
+
+- name: enable and start IPFS
+  become: yes
+  service:
+    name: ipfs
+    state: restarted
+    enabled: yes

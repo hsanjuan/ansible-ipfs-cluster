@@ -1,0 +1,10 @@
+[Unit]
+Description=IPFS Cluster Service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/ipfs-cluster-service
+User=ipfs
+
+[Install]
+WantedBy=multiuser.target

@@ -1,0 +1,19 @@
+{
+    "id": "{{ipfs_cluster_peer_id}}",
+    "private_key" : "{{ipfs_cluster_private_key}}",
+    "cluster_peers" : [
+    {% for host in groups['ipfs'] %}
+      "/ip4/{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}/tcp/9096/ipfs/{{ hostvars[host]['ipfs_cluster_peer_id'] }}"{% if not loop.last %},{% endif %}
+
+    {% endfor %}
+    ],
+    "bootstrap": [],
+    "leave_on_shutdown": false,
+    "cluster_multiaddress": "/ip4/0.0.0.0/tcp/9096",
+    "api_listen_multiaddress": "/ip4/0.0.0.0/tcp/9094",
+    "ipfs_proxy_listen_multiaddress": "/ip4/0.0.0.0/tcp/9095",
+    "ipfs_node_multiaddress": "/ip4/127.0.0.1/tcp/5001",
+    "consensus_data_folder": "/home/ipfs/.ipfs-cluster/data",
+    "replication_factor": 2,
+    "monitoring_interval_seconds": 15
+}

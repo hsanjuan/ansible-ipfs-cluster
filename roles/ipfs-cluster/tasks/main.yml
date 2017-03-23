@@ -1,0 +1,70 @@
+- name: create download folder for go-ipfs
+  become: yes
+  file:
+    state: directory
+    owner: root
+    group: root
+    dest: /opt/ipfs-cluster/{{ipfs_cluster_version}}
+
+- name: download and unpack IPFS cluster
+  become: yes
+  unarchive:
+    remote_src: yes
+    src: "{{ dist_url }}/{{ item }}/{{ipfs_cluster_version}}/{{ item }}_{{ipfs_cluster_version}}_linux-{{ipfs_cluster_arch}}.tar.gz"
+    dest: /opt/ipfs-cluster/{{ipfs_cluster_version}}
+    creates: /opt/ipfs-cluster/{{ipfs_cluster_version}}/{{ item }}
+  with_items:
+    - ipfs-cluster-service
+    - ipfs-cluster-ctl
+
+- name: link ipfs cluster executables
+  become: yes
+  file:
+    state: link
+    owner: root
+    group: root
+    dest: /usr/local/bin/{{ item }}
+    src: /opt/ipfs-cluster/{{ipfs_cluster_version}}/{{ item }}/{{ item }}
+  with_items:
+    - ipfs-cluster-service
+    - ipfs-cluster-ctl
+
+- name: install ipfs-cluster init service
+  become: yes
+  copy:
+    src: etc/systemd/system/ipfs-cluster.service
+    dest: /etc/systemd/system/ipfs-cluster.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: reload systemd
+  become: yes
+  shell: systemctl daemon-reload
+
+- name: make .ipfs-cluster
+  become: yes
+  become_user: ipfs
+  file:
+    state: directory
+    mode: 0700
+    owner: ipfs
+    group: ipfs
+    dest: /home/ipfs/.ipfs-cluster
+
+- name: copy configuration
+  become: yes
+  become_user: ipfs
+  template:
+    src: service.json
+    dest: /home/ipfs/.ipfs-cluster/service.json
+    mode: 0600
+    owner: ipfs
+    group: ipfs
+
+- name: enable and start ipfs-cluster
+  become: yes
+  service:
+    name: ipfs-cluster
+    state: restarted
+    enabled: yes

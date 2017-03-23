@@ -1,0 +1,5 @@
+- name: restart ipfs
+  become: yes
+  service:
+    name: ipfs
+    state: restarted
