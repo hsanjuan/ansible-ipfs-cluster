@@ -1,28 +1,34 @@
-- name: create download folder for go-ipfs
+---
+- name: create download folder for ipfs-update
   become: yes
   file:
     state: directory
     owner: root
     group: root
-    dest: /opt/go-ipfs/{{ipfs_version}}
+    dest: /opt/ipfs-update/{{ipfs_update_version}}
 
-- name: download and unpack go-ipfs
+- name: download and unpack ipfs-update
   become: yes
   unarchive:
     remote_src: yes
-    src: "{{ dist_url }}/go-ipfs/{{ipfs_version}}/go-ipfs_{{ipfs_version}}_linux-{{ipfs_arch}}.tar.gz"
-    dest: /opt/go-ipfs/{{ipfs_version}}
-    creates: /opt/go-ipfs/{{ipfs_version}}/go-ipfs
+    src: "{{ dist_url }}/ipfs-update/{{ipfs_update_version}}/ipfs-update_{{ipfs_update_version}}_linux-{{ipfs_update_arch}}.tar.gz"
+    dest: /opt/ipfs-update/{{ipfs_update_version}}
+    creates: /opt/ipfs-update/{{ipfs_update_version}}/ipfs-update
 
-- name: link go-ipfs executable
+- name: link ipfs-update executable
   become: yes
   file:
     state: link
     owner: root
     group: root
-    dest: /usr/local/bin/ipfs
-    src: /opt/go-ipfs/{{ipfs_version}}/go-ipfs/ipfs
+    dest: /usr/local/bin/ipfs-update
+    src: /opt/ipfs-update/{{ipfs_update_version}}/ipfs-update/ipfs-update
 
+- name: install ipfs
+  become: yes
+  command: ipfs-update install {{ipfs_version}}
+  args:
+    creates: /usr/local/bin/ipfs
 
 - name: install ipfs init service
   become: yes
@@ -32,10 +38,9 @@
     owner: root
     group: root
     mode: 0644
-
-- name: reload systemd
-  become: yes
-  shell: systemctl daemon-reload
+  notify:
+    - reload systemd
+    - restart IPFS
 
 - name: make ipfs group
   become: yes
@@ -63,8 +68,7 @@
     owner: ipfs
     group: ipfs
     mode: 0644
-  notify:
-    - restart ipfs
+  notify: restart IPFS
 
 - name: init IPFS
   become: yes
@@ -72,10 +76,17 @@
   command: ipfs init --empty-repo -- /home/ipfs/ipfs_default_config
   args:
     creates: /home/ipfs/.ipfs/config
+  notify: restart IPFS
+
+- name: reload systemd
+  become: yes
+  systemd:
+    daemon_reload: yes
 
 - name: enable and start IPFS
   become: yes
   service:
     name: ipfs
-    state: restarted
+    state: started
     enabled: yes
+    use: systemd

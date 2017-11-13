@@ -3,5 +3,7 @@
     - ipfs
   vars:
     dist_url: https://dist.ipfs.io
-    ipfs_version: v0.4.7
-    ipfs_arch: arm
+    ipfs_update_version: v1.5.2
+    ipfs_update_arch: amd64
+    ipfs_arch: amd64
+    ipfs_version: v0.4.11

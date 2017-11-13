@@ -1,5 +1,12 @@
-- name: restart ipfs
+- name: reload systemd
+  become: yes
+  systemd: daemon_reload=yes
+  notify: restart IPFS
+
+- name: restart IPFS
   become: yes
   service:
     name: ipfs
+    enabled: yes
     state: restarted
+    use: systemd
