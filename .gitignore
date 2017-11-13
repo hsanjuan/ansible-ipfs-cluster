@@ -1,0 +1,2 @@
+*.retry
+host_vars/*
