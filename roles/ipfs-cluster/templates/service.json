@@ -1,19 +1,66 @@
 {
+  "cluster": {
     "id": "{{ipfs_cluster_peer_id}}",
-    "private_key" : "{{ipfs_cluster_private_key}}",
-    "cluster_peers" : [
-    {% for host in groups['ipfs'] %}
-      "/ip4/{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}/tcp/9096/ipfs/{{ hostvars[host]['ipfs_cluster_peer_id'] }}"{% if not loop.last %},{% endif %}
-
-    {% endfor %}
+    "private_key": "{{ipfs_cluster_private_key}}",
+    "secret": "{{ipfs_cluster_secret}}",
+    "cluster_peers": [
+      {% for host in groups['ipfs'] %}
+      "/ip4/{{ hostvars[host]['ansible_default_ipv4']['address'] }}/tcp/9096/ipfs/{{ hostvars[host]['ipfs_cluster_peer_id'] }}"{% if not loop.last %},{% endif %}
+      {% endfor %}
     ],
     "bootstrap": [],
     "leave_on_shutdown": false,
-    "cluster_multiaddress": "/ip4/0.0.0.0/tcp/9096",
-    "api_listen_multiaddress": "/ip4/0.0.0.0/tcp/9094",
-    "ipfs_proxy_listen_multiaddress": "/ip4/0.0.0.0/tcp/9095",
-    "ipfs_node_multiaddress": "/ip4/127.0.0.1/tcp/5001",
-    "consensus_data_folder": "/home/ipfs/.ipfs-cluster/data",
-    "replication_factor": 2,
-    "monitoring_interval_seconds": 15
+    "listen_multiaddress": "/ip4/0.0.0.0/tcp/9096",
+    "state_sync_interval": "1m0s",
+    "ipfs_sync_interval": "2m10s",
+    "replication_factor": -1,
+    "monitor_ping_interval": "15s"
+  },
+  "consensus": {
+    "raft": {
+      "heartbeat_timeout": "1s",
+      "election_timeout": "1s",
+      "commit_timeout": "50ms",
+      "max_append_entries": 64,
+      "trailing_logs": 10240,
+      "snapshot_interval": "2m0s",
+      "snapshot_threshold": 8192,
+      "leader_lease_timeout": "500ms"
+    }
+  },
+  "api": {
+    "restapi": {
+      "listen_multiaddress": "/ip4/127.0.0.1/tcp/9094",
+      "read_timeout": "30s",
+      "read_header_timeout": "5s",
+      "write_timeout": "1m0s",
+      "idle_timeout": "2m0s",
+      "basic_auth_credentials": null
+    }
+  },
+  "ipfs_connector": {
+    "ipfshttp": {
+      "proxy_listen_multiaddress": "/ip4/127.0.0.1/tcp/9095",
+      "node_multiaddress": "/ip4/127.0.0.1/tcp/5001",
+      "connect_swarms_delay": "7s",
+      "proxy_read_timeout": "10m0s",
+      "proxy_read_header_timeout": "5s",
+      "proxy_write_timeout": "10m0s",
+      "proxy_idle_timeout": "1m0s"
+    }
+  },
+  "monitor": {
+    "monbasic": {
+      "check_interval": "15s"
+    }
+  },
+  "informer": {
+    "disk": {
+      "metric_ttl": "30s",
+      "metric_type": "freespace"
+    },
+    "numpin": {
+      "metric_ttl": "10s"
+    }
+  }
 }

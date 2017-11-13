@@ -1,0 +1,12 @@
+- name: reload systemd
+  become: yes
+  systemd: daemon_reload=yes
+  notify: restart IPFS Cluster
+
+- name: restart IPFS Cluster
+  become: yes
+  service:
+    name: ipfs-cluster
+    enabled: yes
+    state: restarted
+    use: systemd

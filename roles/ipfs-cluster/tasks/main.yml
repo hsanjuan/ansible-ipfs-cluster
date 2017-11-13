@@ -1,4 +1,4 @@
-- name: create download folder for go-ipfs
+- name: create download folder for ipfs-cluster
   become: yes
   file:
     state: directory
@@ -37,12 +37,11 @@
     owner: root
     group: root
     mode: 0644
+  notify:
+    - reload systemd
+    - restart IPFS Cluster
 
-- name: reload systemd
-  become: yes
-  shell: systemctl daemon-reload
-
-- name: make .ipfs-cluster
+- name: make .ipfs-cluster directory
   become: yes
   become_user: ipfs
   file:
@@ -61,10 +60,17 @@
     mode: 0600
     owner: ipfs
     group: ipfs
+  notify: restart IPFS Cluster
 
-- name: enable and start ipfs-cluster
+- name: reload systemd
+  become: yes
+  systemd:
+    daemon_reload: yes
+
+- name: enable and start IPFS Cluster
   become: yes
   service:
     name: ipfs-cluster
-    state: restarted
+    state: started
     enabled: yes
+    use: systemd
