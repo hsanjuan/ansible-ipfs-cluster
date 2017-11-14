@@ -6,6 +6,7 @@
     "cluster_peers": [
       {% for host in groups['ipfs'] %}
       "/ip4/{{ hostvars[host]['ansible_default_ipv4']['address'] }}/tcp/9096/ipfs/{{ hostvars[host]['ipfs_cluster_peer_id'] }}"{% if not loop.last %},{% endif %}
+
       {% endfor %}
     ],
     "bootstrap": [],
