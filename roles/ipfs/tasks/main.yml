@@ -13,6 +13,7 @@
     src: "{{ dist_url }}/go-ipfs/{{ipfs_version}}/go-ipfs_{{ipfs_version}}_linux-{{ipfs_arch}}.tar.gz"
     dest: /opt/go-ipfs/{{ipfs_version}}
     creates: /opt/go-ipfs/{{ipfs_version}}/go-ipfs
+  notify: restart IPFS
 
 - name: link go-ipfs executable
   become: yes
@@ -23,7 +24,6 @@
     dest: /usr/local/bin/ipfs
     src: /opt/go-ipfs/{{ipfs_version}}/go-ipfs/ipfs
 
-
 - name: install ipfs init service
   become: yes
   copy:
@@ -32,10 +32,9 @@
     owner: root
     group: root
     mode: 0644
-
-- name: reload systemd
-  become: yes
-  shell: systemctl daemon-reload
+  notify:
+    - reload systemd
+    - restart IPFS
 
 - name: make ipfs group
   become: yes
@@ -63,8 +62,7 @@
     owner: ipfs
     group: ipfs
     mode: 0644
-  notify:
-    - restart ipfs
+  notify: restart IPFS
 
 - name: init IPFS
   become: yes
@@ -72,10 +70,17 @@
   command: ipfs init --empty-repo -- /home/ipfs/ipfs_default_config
   args:
     creates: /home/ipfs/.ipfs/config
+  notify: restart IPFS
+
+- name: reload systemd
+  become: yes
+  systemd:
+    daemon_reload: yes
 
 - name: enable and start IPFS
   become: yes
   service:
     name: ipfs
-    state: restarted
+    state: started
     enabled: yes
+    use: systemd

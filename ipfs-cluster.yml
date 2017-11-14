@@ -3,5 +3,6 @@
     - ipfs-cluster
   vars:
     dist_url: https://dist.ipfs.io
-    ipfs_cluster_version: v0.0.10
-    ipfs_cluster_arch: arm
+    ipfs_cluster_version: v0.2.1
+    ipfs_cluster_arch: amd64
+    ipfs_cluster_secret: "generate a secret with `od  -vN 32 -An -tx1 /dev/urandom | tr -d ' \n' ; echo`"
