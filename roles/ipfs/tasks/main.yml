@@ -1,34 +1,28 @@
----
-- name: create download folder for ipfs-update
+- name: create download folder for go-ipfs
   become: yes
   file:
     state: directory
     owner: root
     group: root
-    dest: /opt/ipfs-update/{{ipfs_update_version}}
+    dest: /opt/go-ipfs/{{ipfs_version}}
 
-- name: download and unpack ipfs-update
+- name: download and unpack go-ipfs
   become: yes
   unarchive:
     remote_src: yes
-    src: "{{ dist_url }}/ipfs-update/{{ipfs_update_version}}/ipfs-update_{{ipfs_update_version}}_linux-{{ipfs_update_arch}}.tar.gz"
-    dest: /opt/ipfs-update/{{ipfs_update_version}}
-    creates: /opt/ipfs-update/{{ipfs_update_version}}/ipfs-update
+    src: "{{ dist_url }}/go-ipfs/{{ipfs_version}}/go-ipfs_{{ipfs_version}}_linux-{{ipfs_arch}}.tar.gz"
+    dest: /opt/go-ipfs/{{ipfs_version}}
+    creates: /opt/go-ipfs/{{ipfs_version}}/go-ipfs
+  notify: restart IPFS
 
-- name: link ipfs-update executable
+- name: link go-ipfs executable
   become: yes
   file:
     state: link
     owner: root
     group: root
-    dest: /usr/local/bin/ipfs-update
-    src: /opt/ipfs-update/{{ipfs_update_version}}/ipfs-update/ipfs-update
-
-- name: install ipfs
-  become: yes
-  command: ipfs-update install {{ipfs_version}}
-  args:
-    creates: /usr/local/bin/ipfs
+    dest: /usr/local/bin/ipfs
+    src: /opt/go-ipfs/{{ipfs_version}}/go-ipfs/ipfs
 
 - name: install ipfs init service
   become: yes
