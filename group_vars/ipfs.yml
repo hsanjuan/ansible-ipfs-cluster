@@ -25,5 +25,7 @@ ipfs_cluster_snapshot_interval: 2m
 ipfs_cluster_snapshot_threshold: 4096
 ipfs_cluster_leader_lease_timeout: 800ms
 
+ipfs_cluster_api_listen_multiaddress: "/ip4/127.0.0.1/tcp/9094"
+
 ipfs_cluster_informer_disk_metric_ttl: 5m
 ipfs_cluster_informer_disk_metric_type: "freespace"

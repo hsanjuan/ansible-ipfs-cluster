@@ -42,7 +42,7 @@
   },
   "api": {
     "restapi": {
-      "listen_multiaddress": "/ip4/127.0.0.1/tcp/9094",
+      "listen_multiaddress": "{{ ipfs_cluster_api_listen_multiaddress }}",
       "read_timeout": "30s",
       "read_header_timeout": "5s",
       "write_timeout": "1m0s",
