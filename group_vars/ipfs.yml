@@ -1,0 +1,29 @@
+dist_url: https://dist.ipfs.io
+ipfs_version: v0.4.13
+ipfs_arch: amd64
+ipfs_home: /home/ipfs
+ipfs_storage_max: 10G
+
+ipfs_cluster_secret: "use `od  -vN 32 -An -tx1 /dev/urandom | tr -d ' \n' ; echo` to generate this"
+ipfs_cluster_arch: amd64
+ipfs_cluster_version: v0.3.4
+
+
+ipfs_cluster_state_sync_interval: 1m
+ipfs_cluster_ipfs_sync_interval: 2m
+ipfs_cluster_repl_factor_min: 2
+ipfs_cluster_repl_factor_max: 3
+ipfs_cluster_monitor_ping_interval: 45s
+
+ipfs_cluster_wait_for_leader_timeout: 25s
+ipfs_cluster_commit_retries: 2
+ipfs_cluster_commit_retry_delay: 300ms
+ipfs_cluster_heartbeat_timeout: 1500ms
+ipfs_cluster_election_timeout: 1500ms
+ipfs_cluster_commit_timeout: 100ms
+ipfs_cluster_snapshot_interval: 2m
+ipfs_cluster_snapshot_threshold: 4096
+ipfs_cluster_leader_lease_timeout: 800ms
+
+ipfs_cluster_informer_disk_metric_ttl: 5m
+ipfs_cluster_informer_disk_metric_type: "freespace"

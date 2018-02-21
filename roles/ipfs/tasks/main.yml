@@ -49,16 +49,25 @@
     name: ipfs
     group: ipfs
     shell: /bin/bash
-    home: /home/ipfs
+    home: "{{ ipfs_home }}"
     comment: IPFS user
     system: yes
+
+- name: chown ipfs executable
+  become: yes
+  file:
+    state: directory
+    recurse: yes
+    owner: ipfs
+    group: ipfs
+    dest: /opt/go-ipfs
 
 - name: copy default config
   become: yes
   become_user: ipfs
   template:
     src: home/ipfs/ipfs_default_config
-    dest: /home/ipfs/ipfs_default_config
+    dest: "{{ ipfs_home }}/ipfs_default_config"
     owner: ipfs
     group: ipfs
     mode: 0644
@@ -67,15 +76,16 @@
 - name: init IPFS
   become: yes
   become_user: ipfs
-  command: ipfs init --empty-repo -- /home/ipfs/ipfs_default_config
+  command: ipfs init --empty-repo -- {{ ipfs_home }}/ipfs_default_config
   args:
-    creates: /home/ipfs/.ipfs/config
+    creates: "{{ ipfs_home }}/.ipfs/config"
   notify: restart IPFS
 
 - name: reload systemd
   become: yes
   systemd:
     daemon_reload: yes
+    name: ipfs
 
 - name: enable and start IPFS
   become: yes

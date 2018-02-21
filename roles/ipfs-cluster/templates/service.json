@@ -1,32 +1,43 @@
 {
   "cluster": {
     "id": "{{ipfs_cluster_peer_id}}",
+    "peername": "{{ipfs_cluster_peername }}",
     "private_key": "{{ipfs_cluster_private_key}}",
     "secret": "{{ipfs_cluster_secret}}",
-    "cluster_peers": [
-      {% for host in groups['ipfs'] %}
-      "/ip4/{{ hostvars[host]['ansible_default_ipv4']['address'] }}/tcp/9096/ipfs/{{ hostvars[host]['ipfs_cluster_peer_id'] }}"{% if not loop.last %},{% endif %}
+    "peers": [
+{% for host in groups['ipfs'] %}
+{% if hostvars[host]['ipfs_cluster_peer_addr'] != "" %}
+"{{ hostvars[host]['ipfs_cluster_peer_addr'] }}"{% if not loop.last %},{% endif %}
 
-      {% endfor %}
+{% else %}
+"/ip4/{{ hostvars[host]['ansible_default_ipv4']['address'] }}/tcp/9096/ipfs/{{ hostvars[host]['ipfs_cluster_peer_id'] }}"{% if not loop.last %},{% endif %}
+
+{% endif %}
+{% endfor %}
     ],
     "bootstrap": [],
     "leave_on_shutdown": false,
     "listen_multiaddress": "/ip4/0.0.0.0/tcp/9096",
-    "state_sync_interval": "1m0s",
-    "ipfs_sync_interval": "2m10s",
-    "replication_factor": -1,
-    "monitor_ping_interval": "15s"
+    "state_sync_interval": "{{ ipfs_cluster_state_sync_interval }}",
+    "ipfs_sync_interval": "{{ ipfs_cluster_ipfs_sync_interval }}",
+    "replication_factor_min": {{ ipfs_cluster_repl_factor_min }},
+    "replication_factor_max": {{ ipfs_cluster_repl_factor_max }},
+    "monitor_ping_interval": "{{ ipfs_cluster_monitor_ping_interval }}"
   },
   "consensus": {
     "raft": {
-      "heartbeat_timeout": "1s",
-      "election_timeout": "1s",
-      "commit_timeout": "50ms",
+      "wait_for_leader_timeout": "{{ ipfs_cluster_wait_for_leader_timeout }}",
+      "network_timeout": "10s",
+      "commit_retries": {{ ipfs_cluster_commit_retries }},
+      "commit_retry_delay": "{{ ipfs_cluster_commit_retry_delay }}",
+      "heartbeat_timeout": "{{ ipfs_cluster_heartbeat_timeout }}",
+      "election_timeout": "{{ ipfs_cluster_election_timeout }}",
+      "commit_timeout": "{{ ipfs_cluster_commit_timeout }}",
       "max_append_entries": 64,
       "trailing_logs": 10240,
-      "snapshot_interval": "2m0s",
-      "snapshot_threshold": 8192,
-      "leader_lease_timeout": "500ms"
+      "snapshot_interval": "{{ ipfs_cluster_snapshot_interval}}",
+      "snapshot_threshold": {{ ipfs_cluster_snapshot_threshold }},
+      "leader_lease_timeout": "{{ ipfs_cluster_leader_lease_timeout }}"
     }
   },
   "api": {
@@ -57,8 +68,8 @@
   },
   "informer": {
     "disk": {
-      "metric_ttl": "30s",
-      "metric_type": "freespace"
+      "metric_ttl": "{{ ipfs_cluster_informer_disk_metric_ttl }}",
+      "metric_type": "{{ ipfs_cluster_informer_disk_metric_type }}"
     },
     "numpin": {
       "metric_ttl": "10s"

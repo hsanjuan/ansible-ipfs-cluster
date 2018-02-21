@@ -29,6 +29,15 @@
     - ipfs-cluster-service
     - ipfs-cluster-ctl
 
+- name: chown ipfs-cluster files
+  become: yes
+  file:
+    state: directory
+    recurse: yes
+    owner: ipfs
+    group: ipfs
+    dest: /opt/ipfs-cluster
+
 - name: install ipfs-cluster init service
   become: yes
   copy:
@@ -49,23 +58,27 @@
     mode: 0700
     owner: ipfs
     group: ipfs
-    dest: /home/ipfs/.ipfs-cluster
+    dest: "{{ ipfs_home }}/.ipfs-cluster"
 
 - name: copy configuration
   become: yes
   become_user: ipfs
   template:
     src: service.json
-    dest: /home/ipfs/.ipfs-cluster/service.json
+    dest: "{{ ipfs_home }}/.ipfs-cluster/service.json"
     mode: 0600
     owner: ipfs
     group: ipfs
+  tags:
+    - config
   notify: restart IPFS Cluster
+
 
 - name: reload systemd
   become: yes
   systemd:
     daemon_reload: yes
+    name: ipfs-cluster
 
 - name: enable and start IPFS Cluster
   become: yes
