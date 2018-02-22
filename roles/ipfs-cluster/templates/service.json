@@ -43,10 +43,10 @@
   "api": {
     "restapi": {
       "listen_multiaddress": "{{ ipfs_cluster_api_listen_multiaddress }}",
-      "read_timeout": "30s",
-      "read_header_timeout": "5s",
-      "write_timeout": "1m0s",
-      "idle_timeout": "2m0s",
+      "read_timeout": "{{ ipfs_cluster_api_read_timeout }}",
+      "read_header_timeout": "{{ ipfs_cluster_api_read_header_timeout }}",
+      "write_timeout": "{{ ipfs_cluster_api_write_timeout }}",
+      "idle_timeout": "{{ ipfs_cluster_api_idle_timeout }}",
       "basic_auth_credentials": null
     }
   },
@@ -59,6 +59,13 @@
       "proxy_read_header_timeout": "5s",
       "proxy_write_timeout": "10m0s",
       "proxy_idle_timeout": "1m0s"
+    }
+  },
+  "pin_tracker": {
+    "maptracker": {
+      "pinning_timeout": "{{ ipfs_cluster_pintracker_pinning_timeout }}",
+      "unpinning_timeout": "{{ ipfs_cluster_pintracker_unpinning_timeout }}",
+      "max_pin_queue_size": 4096
     }
   },
   "monitor": {
