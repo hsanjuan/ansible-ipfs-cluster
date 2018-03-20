@@ -34,7 +34,7 @@
       "type": "mount"
     },
     "HashOnRead": false,
-    "BloomFilterSize": 0
+    "BloomFilterSize": {{ ipfs_bloom_filter_size }}
   },
   "Addresses": {
     "Swarm": [
@@ -43,7 +43,7 @@
     ],
     "Announce": [],
     "NoAnnounce": [],
-    "API": "/ip4/127.0.0.1/tcp/5001",
+    "API": "{{ ipfs_api_listen }}",
     "Gateway": "/ip4/127.0.0.1/tcp/8080"
   },
   "Mounts": {
@@ -116,14 +116,14 @@
       "/ip4/240.0.0.0/ipcidr/4"
     ],
     "DisableBandwidthMetrics": false,
-    "DisableNatPortMap": false,
+    "DisableNatPortMap": true,
     "DisableRelay": false,
     "EnableRelayHop": false,
     "ConnMgr": {
       "Type": "basic",
-      "LowWater": 600,
-      "HighWater": 900,
-      "GracePeriod": "20s"
+      "LowWater": 1500,
+      "HighWater": 2000,
+      "GracePeriod": "1m"
     }
   },
   "Reprovider": {
