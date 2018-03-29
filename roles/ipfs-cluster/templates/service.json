@@ -42,12 +42,24 @@
   },
   "api": {
     "restapi": {
-      "listen_multiaddress": "{{ ipfs_cluster_api_listen_multiaddress }}",
+      "http_listen_multiaddress": "{{ ipfs_cluster_api_http_listen_multiaddress }}",
+      "libp2p_listen_multiaddress": "{{ ipfs_cluster_api_libp2p_listen_multiaddress | default('') }}",
+      "id": "{{ ipfs_cluster_api_id | default('') }}",
+      "private_key": "{{ ipfs_cluster_api_private_key | default('') }}",
       "read_timeout": "{{ ipfs_cluster_api_read_timeout }}",
       "read_header_timeout": "{{ ipfs_cluster_api_read_header_timeout }}",
       "write_timeout": "{{ ipfs_cluster_api_write_timeout }}",
       "idle_timeout": "{{ ipfs_cluster_api_idle_timeout }}",
+{% if ipfs_cluster_api_users | default('') != "" %}
+      "basic_auth_credentials": {
+{% for u in ipfs_cluster_api_users %}
+        "{{ u.username }}": "{{ u.password }}"{% if not loop.last %},{% endif %}
+
+{% endfor %}
+      }
+{% else %}
       "basic_auth_credentials": null
+{% endif %}
     }
   },
   "ipfs_connector": {
@@ -58,14 +70,16 @@
       "proxy_read_timeout": "10m0s",
       "proxy_read_header_timeout": "5s",
       "proxy_write_timeout": "10m0s",
-      "proxy_idle_timeout": "1m0s"
+      "proxy_idle_timeout": "1m0s",
+      "pin_method": "{{ ipfs_cluster_ipfsconn_pin_method }}"
     }
   },
   "pin_tracker": {
     "maptracker": {
       "pinning_timeout": "{{ ipfs_cluster_pintracker_pinning_timeout }}",
       "unpinning_timeout": "{{ ipfs_cluster_pintracker_unpinning_timeout }}",
-      "max_pin_queue_size": 4096
+      "max_pin_queue_size": 4096,
+      "concurrent_pins": {{ ipfs_cluster_pintracker_concurrent_pins }}
     }
   },
   "monitor": {

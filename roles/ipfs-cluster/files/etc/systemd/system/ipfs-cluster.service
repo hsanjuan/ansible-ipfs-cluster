@@ -3,7 +3,7 @@ Description=IPFS Cluster Service
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/ipfs-cluster-service
+ExecStart=/usr/local/bin/ipfs-cluster-service daemon --upgrade
 Restart=on-failure
 User=ipfs
 
