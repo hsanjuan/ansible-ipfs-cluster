@@ -4,40 +4,36 @@
     "peername": "{{ipfs_cluster_peername }}",
     "private_key": "{{ipfs_cluster_private_key}}",
     "secret": "{{ipfs_cluster_secret}}",
-    "peers": [
-{% for host in groups['ipfs'] %}
-{% if hostvars[host]['ipfs_cluster_peer_addr'] != "" %}
-"{{ hostvars[host]['ipfs_cluster_peer_addr'] }}"{% if not loop.last %},{% endif %}
-
-{% else %}
-"/ip4/{{ hostvars[host]['ansible_default_ipv4']['address'] }}/tcp/9096/ipfs/{{ hostvars[host]['ipfs_cluster_peer_id'] }}"{% if not loop.last %},{% endif %}
-
-{% endif %}
-{% endfor %}
-    ],
-    "bootstrap": [],
     "leave_on_shutdown": false,
     "listen_multiaddress": "/ip4/0.0.0.0/tcp/9096",
     "state_sync_interval": "{{ ipfs_cluster_state_sync_interval }}",
     "ipfs_sync_interval": "{{ ipfs_cluster_ipfs_sync_interval }}",
     "replication_factor_min": {{ ipfs_cluster_repl_factor_min }},
     "replication_factor_max": {{ ipfs_cluster_repl_factor_max }},
-    "monitor_ping_interval": "{{ ipfs_cluster_monitor_ping_interval }}"
+    "monitor_ping_interval": "{{ ipfs_cluster_monitor_ping_interval }}",
+    "peer_watch_interval": "{{ ipfs_cluster_peer_watch_interval }}",
+    "disable_repinning": {{ ipfs_cluster_disable_repinning | lower }}
   },
   "consensus": {
     "raft": {
-      "wait_for_leader_timeout": "{{ ipfs_cluster_wait_for_leader_timeout }}",
+      "init_peerset": [
+{% for p in ipfs_cluster_raft_init_peerset %}
+          - "{{ p }}"{% if not loop.last %},{% endif %}
+{% endfor %}
+      ],
+      "wait_for_leader_timeout": "{{ ipfs_cluster_raft_wait_for_leader_timeout }}",
       "network_timeout": "10s",
-      "commit_retries": {{ ipfs_cluster_commit_retries }},
-      "commit_retry_delay": "{{ ipfs_cluster_commit_retry_delay }}",
-      "heartbeat_timeout": "{{ ipfs_cluster_heartbeat_timeout }}",
-      "election_timeout": "{{ ipfs_cluster_election_timeout }}",
-      "commit_timeout": "{{ ipfs_cluster_commit_timeout }}",
+      "commit_retries": {{ ipfs_cluster_raft_commit_retries }},
+      "commit_retry_delay": "{{ ipfs_cluster_raft_commit_retry_delay }}",
+      "backups_rotate": {{ ipfs_cluster_raft_backups_rotate }},
+      "heartbeat_timeout": "{{ ipfs_cluster_raft_heartbeat_timeout }}",
+      "election_timeout": "{{ ipfs_cluster_raft_election_timeout }}",
+      "commit_timeout": "{{ ipfs_cluster_raft_commit_timeout }}",
       "max_append_entries": 64,
       "trailing_logs": 10240,
-      "snapshot_interval": "{{ ipfs_cluster_snapshot_interval}}",
-      "snapshot_threshold": {{ ipfs_cluster_snapshot_threshold }},
-      "leader_lease_timeout": "{{ ipfs_cluster_leader_lease_timeout }}"
+      "snapshot_interval": "{{ ipfs_cluster_raft_snapshot_interval}}",
+      "snapshot_threshold": {{ ipfs_cluster_raft_snapshot_threshold }},
+      "leader_lease_timeout": "{{ ipfs_cluster_raft_leader_lease_timeout }}"
     }
   },
   "api": {
@@ -66,18 +62,19 @@
     "ipfshttp": {
       "proxy_listen_multiaddress": "{{ ipfs_cluster_ipfsconn_proxy_listen_multiaddress }}",
       "node_multiaddress": "/ip4/127.0.0.1/tcp/5001",
-      "connect_swarms_delay": "7s",
+      "connect_swarms_delay": "30s",
       "proxy_read_timeout": "10m0s",
       "proxy_read_header_timeout": "5s",
       "proxy_write_timeout": "10m0s",
       "proxy_idle_timeout": "1m0s",
-      "pin_method": "{{ ipfs_cluster_ipfsconn_pin_method }}"
+      "pin_method": "{{ ipfs_cluster_ipfsconn_pin_method }}",
+      "ipfs_request_timeout": "{{ ipfs_cluster_ipfsconn_ipfs_request_timeout }}",
+      "pin_timeout": "{{ ipfs_cluster_ipfsconn_pin_timeout }}",
+      "unpin_timeout": "{{ ipfs_cluster_ipfsconn_unpin_timeout }}"
     }
   },
   "pin_tracker": {
     "maptracker": {
-      "pinning_timeout": "{{ ipfs_cluster_pintracker_pinning_timeout }}",
-      "unpinning_timeout": "{{ ipfs_cluster_pintracker_unpinning_timeout }}",
       "max_pin_queue_size": 4096,
       "concurrent_pins": {{ ipfs_cluster_pintracker_concurrent_pins }}
     }

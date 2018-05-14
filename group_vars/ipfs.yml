@@ -14,16 +14,20 @@ ipfs_cluster_ipfs_sync_interval: 2m
 ipfs_cluster_repl_factor_min: 2
 ipfs_cluster_repl_factor_max: 3
 ipfs_cluster_monitor_ping_interval: 45s
+ipfs_cluster_peer_watch_interval: 5s
+ipfs_cluster_disable_repinning: false
 
-ipfs_cluster_wait_for_leader_timeout: 25s
-ipfs_cluster_commit_retries: 2
-ipfs_cluster_commit_retry_delay: 300ms
-ipfs_cluster_heartbeat_timeout: 1500ms
-ipfs_cluster_election_timeout: 1500ms
-ipfs_cluster_commit_timeout: 100ms
-ipfs_cluster_snapshot_interval: 2m
-ipfs_cluster_snapshot_threshold: 4096
-ipfs_cluster_leader_lease_timeout: 800ms
+ipfs_cluster_raft_init_peerset: []
+ipfs_cluster_raft_wait_for_leader_timeout: 25s
+ipfs_cluster_raft_commit_retries: 2
+ipfs_cluster_raft_commit_retry_delay: 300ms
+ipfs_cluster_raft_backups_rotate: 6
+ipfs_cluster_raft_heartbeat_timeout: 1500ms
+ipfs_cluster_raft_election_timeout: 1500ms
+ipfs_cluster_raft_commit_timeout: 100ms
+ipfs_cluster_raft_snapshot_interval: 2m
+ipfs_cluster_raft_snapshot_threshold: 4096
+ipfs_cluster_raft_leader_lease_timeout: 800ms
 
 ipfs_cluster_api_http_listen_multiaddress: "/ip4/127.0.0.1/tcp/9094"
 ipfs_cluster_api_read_timeout: 30s
@@ -33,9 +37,10 @@ ipfs_cluster_api_idle_timeout: 2m
 
 ipfs_cluster_ipfsconn_proxy_listen_multiaddress: "/ip4/127.0.0.1/tcp/9095"
 ipfs_cluster_ipfsconn_pin_method: pin
+ipfs_cluster_ipfsconn_ipfs_request_timeout: 5m0s
+ipfs_cluster_ipfsconn_pin_timeout: 24h0m0s
+ipfs_cluster_ipfsconn_unpin_timeout: 3h0m0s
 
-ipfs_cluster_pintracker_pinning_timeout: 1h
-ipfs_cluster_pintracker_unpinning_timeout: 5m
 ipfs_cluster_pintracker_concurrent_pins: 1
 
 ipfs_cluster_informer_disk_metric_ttl: 5m
