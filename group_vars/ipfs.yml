@@ -31,6 +31,7 @@ ipfs_cluster_api_read_header_timeout: 5s
 ipfs_cluster_api_write_timeout: 1m
 ipfs_cluster_api_idle_timeout: 2m
 
+ipfs_cluster_ipfsconn_proxy_listen_multiaddress: "/ip4/127.0.0.1/tcp/9095"
 ipfs_cluster_ipfsconn_pin_method: pin
 
 ipfs_cluster_pintracker_pinning_timeout: 1h
