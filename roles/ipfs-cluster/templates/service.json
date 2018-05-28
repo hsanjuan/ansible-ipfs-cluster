@@ -18,7 +18,8 @@
     "raft": {
       "init_peerset": [
 {% for p in ipfs_cluster_raft_init_peerset %}
-          - "{{ p }}"{% if not loop.last %},{% endif %}
+          "{{ p }}"{% if not loop.last %},{% endif %}
+
 {% endfor %}
       ],
       "wait_for_leader_timeout": "{{ ipfs_cluster_raft_wait_for_leader_timeout }}",
