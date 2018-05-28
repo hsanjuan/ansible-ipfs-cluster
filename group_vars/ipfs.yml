@@ -4,6 +4,7 @@ ipfs_arch: amd64
 ipfs_home: /home/ipfs
 ipfs_storage_max: 10G
 ipfs_bloom_filter_size: 1048576 # 1MB
+ipfs_api_listen: /ip4/127.0.0.1/tcp/5001
 
 ipfs_cluster_secret: "use `od  -vN 32 -An -tx1 /dev/urandom | tr -d ' \n' ; echo` to generate this"
 ipfs_cluster_arch: amd64
