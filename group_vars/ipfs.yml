@@ -37,12 +37,12 @@ ipfs_cluster_api_write_timeout: 1m
 ipfs_cluster_api_idle_timeout: 2m
 
 ipfs_cluster_ipfsconn_proxy_listen_multiaddress: "/ip4/127.0.0.1/tcp/9095"
-ipfs_cluster_ipfsconn_pin_method: pin
+ipfs_cluster_ipfsconn_pin_method: refs
 ipfs_cluster_ipfsconn_ipfs_request_timeout: 5m0s
 ipfs_cluster_ipfsconn_pin_timeout: 24h0m0s
 ipfs_cluster_ipfsconn_unpin_timeout: 3h0m0s
 
-ipfs_cluster_pintracker_concurrent_pins: 1
+ipfs_cluster_pintracker_concurrent_pins: 10
 
 ipfs_cluster_informer_disk_metric_ttl: 5m
 ipfs_cluster_informer_disk_metric_type: "freespace"
