@@ -4,37 +4,20 @@
     "PrivKey": "{{ ipfs_private_key }}"
   },
   "Datastore": {
-    "StorageMax": "{{ ipfs_storage_max }}",
-    "StorageGCWatermark": 90,
+    "BloomFilterSize": {{ ipfs_bloom_filter_size }},
     "GCPeriod": "1h",
-    "Spec": {
-      "mounts": [
-        {
-          "child": {
-            "path": "blocks",
-            "shardFunc": "/repo/flatfs/shard/v1/next-to-last/2",
-            "sync": true,
-            "type": "flatfs"
-          },
-          "mountpoint": "/blocks",
-          "prefix": "flatfs.datastore",
-          "type": "measure"
-        },
-        {
-          "child": {
-            "compression": "none",
-            "path": "datastore",
-            "type": "levelds"
-          },
-          "mountpoint": "/",
-          "prefix": "leveldb.datastore",
-          "type": "measure"
-        }
-      ],
-      "type": "mount"
-    },
     "HashOnRead": false,
-    "BloomFilterSize": {{ ipfs_bloom_filter_size }}
+    "Spec": {
+      "child": {
+        "path": "badgerds",
+        "syncWrites": true,
+        "type": "badgerds"
+      },
+      "prefix": "badger.datastore",
+      "type": "measure"
+    },
+    "StorageGCWatermark": 90,
+    "StorageMax": "{{ ipfs_storage_max }}"
   },
   "Addresses": {
     "Swarm": [
@@ -132,7 +115,14 @@
   },
   "Experimental": {
     "FilestoreEnabled": false,
+    "Libp2pStreamMounting": false,
     "ShardingEnabled": false,
-    "Libp2pStreamMounting": false
+    "UrlstoreEnabled": false
+  },
+  "Routing": {
+    "Type": "dht"
+  },
+  "Pubsub": {
+    "Router": ""
   }
 }

@@ -71,7 +71,8 @@
     owner: ipfs
     group: ipfs
     mode: 0644
-  notify: restart IPFS
+  tags:
+    - config
 
 - name: init IPFS
   become: yes
