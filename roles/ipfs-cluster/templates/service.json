@@ -53,10 +53,22 @@
         "{{ u.username }}": "{{ u.password }}"{% if not loop.last %},{% endif %}
 
 {% endfor %}
-      }
+      },
 {% else %}
-      "basic_auth_credentials": null
+      "basic_auth_credentials": null,
 {% endif %}
+      "headers": {
+        "Access-Control-Allow-Headers": [
+          "X-Requested-With",
+          "Range"
+        ],
+        "Access-Control-Allow-Methods": [
+          "GET"
+        ],
+        "Access-Control-Allow-Origin": [
+          "*"
+        ]
+      }
     }
   },
   "ipfs_connector": {
