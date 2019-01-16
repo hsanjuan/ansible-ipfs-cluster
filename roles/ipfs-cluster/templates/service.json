@@ -38,6 +38,14 @@
     }
   },
   "api": {
+    "ipfsproxy": {
+      "node_multiaddress": "/ip4/127.0.0.1/tcp/5001",
+      "listen_multiaddress": "{{ ipfs_cluster_ipfsproxy_listen_multiaddress }}",
+      "read_timeout": "10m0s",
+      "read_header_timeout": "5s",
+      "write_timeout": "10m0s",
+      "idle_timeout": "1m0s"
+    },
     "restapi": {
       "http_listen_multiaddress": "{{ ipfs_cluster_api_http_listen_multiaddress }}",
       "libp2p_listen_multiaddress": "{{ ipfs_cluster_api_libp2p_listen_multiaddress | default('') }}",
@@ -57,29 +65,19 @@
 {% else %}
       "basic_auth_credentials": null,
 {% endif %}
-      "headers": {
-        "Access-Control-Allow-Headers": [
-          "X-Requested-With",
-          "Range"
-        ],
-        "Access-Control-Allow-Methods": [
-          "GET"
-        ],
-        "Access-Control-Allow-Origin": [
-          "*"
-        ]
-      }
+      "headers": null,
+      "cors_allowed_origins": [],
+      "cors_allowed_methods": [],
+      "cors_allowed_headers": [],
+      "cors_exposed_headers": [],
+      "cors_allow_credentials": false,
+      "cors_max_age": "0s"
     }
   },
   "ipfs_connector": {
     "ipfshttp": {
-      "proxy_listen_multiaddress": "{{ ipfs_cluster_ipfsconn_proxy_listen_multiaddress }}",
       "node_multiaddress": "/ip4/127.0.0.1/tcp/5001",
       "connect_swarms_delay": "30s",
-      "proxy_read_timeout": "10m0s",
-      "proxy_read_header_timeout": "5s",
-      "proxy_write_timeout": "10m0s",
-      "proxy_idle_timeout": "1m0s",
       "pin_method": "{{ ipfs_cluster_ipfsconn_pin_method }}",
       "ipfs_request_timeout": "{{ ipfs_cluster_ipfsconn_ipfs_request_timeout }}",
       "pin_timeout": "{{ ipfs_cluster_ipfsconn_pin_timeout }}",

@@ -31,13 +31,14 @@ ipfs_cluster_raft_snapshot_interval: 2m
 ipfs_cluster_raft_snapshot_threshold: 4096
 ipfs_cluster_raft_leader_lease_timeout: 800ms
 
+ipfs_cluster_ipfsproxy_listen_multiaddress: "/ip4/127.0.0.1/tcp/9095"
+
 ipfs_cluster_api_http_listen_multiaddress: "/ip4/127.0.0.1/tcp/9094"
 ipfs_cluster_api_read_timeout: 30s
 ipfs_cluster_api_read_header_timeout: 5s
 ipfs_cluster_api_write_timeout: 1m
 ipfs_cluster_api_idle_timeout: 2m
 
-ipfs_cluster_ipfsconn_proxy_listen_multiaddress: "/ip4/127.0.0.1/tcp/9095"
 ipfs_cluster_ipfsconn_pin_method: refs
 ipfs_cluster_ipfsconn_ipfs_request_timeout: 5m0s
 ipfs_cluster_ipfsconn_pin_timeout: 24h0m0s
