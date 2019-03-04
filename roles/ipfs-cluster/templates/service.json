@@ -39,12 +39,14 @@
   },
   "api": {
     "ipfsproxy": {
-      "node_multiaddress": "/ip4/127.0.0.1/tcp/5001",
       "listen_multiaddress": "{{ ipfs_cluster_ipfsproxy_listen_multiaddress }}",
+      "node_multiaddress": "/ip4/127.0.0.1/tcp/5001",
       "read_timeout": "10m0s",
       "read_header_timeout": "5s",
       "write_timeout": "10m0s",
-      "idle_timeout": "1m0s"
+      "idle_timeout": "1m0s",
+      "extract_headers_path": "/api/v0/version",
+      "extract_headers_ttl": "5m0s",
     },
     "restapi": {
       "http_listen_multiaddress": "{{ ipfs_cluster_api_http_listen_multiaddress }}",
@@ -88,6 +90,10 @@
     "maptracker": {
       "max_pin_queue_size": 4096,
       "concurrent_pins": {{ ipfs_cluster_pintracker_concurrent_pins }}
+    },
+    "stateless": {
+      "max_pin_queue_size": 50000,
+      "concurrent_pins": 10
     }
   },
   "monitor": {
@@ -105,6 +111,19 @@
     },
     "numpin": {
       "metric_ttl": "10s"
+    }
+  },
+  "observations": {
+    "metrics": {
+      "enable_stats": false,
+      "prometheus_endpoint": "/ip4/0.0.0.0/tcp/8888",
+      "reporting_interval": "2s"
+    },
+    "tracing": {
+      "enable_tracing": false,
+      "jaeger_agent_endpoint": "/ip4/0.0.0.0/udp/6831",
+      "sampling_prob": 0.3,
+      "service_name": "cluster-daemon"
     }
   }
 }
