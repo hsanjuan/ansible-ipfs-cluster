@@ -46,7 +46,7 @@
       "write_timeout": "10m0s",
       "idle_timeout": "1m0s",
       "extract_headers_path": "/api/v0/version",
-      "extract_headers_ttl": "5m0s",
+      "extract_headers_ttl": "5m0s"
     },
     "restapi": {
       "http_listen_multiaddress": "{{ ipfs_cluster_api_http_listen_multiaddress }}",
