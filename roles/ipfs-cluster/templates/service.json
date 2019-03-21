@@ -50,6 +50,8 @@
     },
     "restapi": {
       "http_listen_multiaddress": "{{ ipfs_cluster_api_http_listen_multiaddress }}",
+      "ssl_cert_file":"{{ ipfs_cluster_api_ssl_cert_file | default('') }}",
+      "ssl_key_file":"{{ ipfs_cluster_api_ssl_key_file | default('') }}",
       "libp2p_listen_multiaddress": "{{ ipfs_cluster_api_libp2p_listen_multiaddress | default('') }}",
       "id": "{{ ipfs_cluster_api_id | default('') }}",
       "private_key": "{{ ipfs_cluster_api_private_key | default('') }}",
