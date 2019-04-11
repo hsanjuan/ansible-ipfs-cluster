@@ -90,7 +90,7 @@
   },
   "pin_tracker": {
     "maptracker": {
-      "max_pin_queue_size": 4096,
+      "max_pin_queue_size": {{ ipfs_cluster_pintracker_max_pin_queue_size | default(4096) }},
       "concurrent_pins": {{ ipfs_cluster_pintracker_concurrent_pins }}
     },
     "stateless": {
