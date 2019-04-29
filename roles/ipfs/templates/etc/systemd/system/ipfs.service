@@ -3,7 +3,8 @@ Description=IPFS daemon
 After=network.target
 
 [Service]
-Environment="IPFS_FD_MAX=4096"
+LimitNOFILE={{ ipfs_fd_max }}
+Environment="IPFS_FD_MAX={{ ipfs_fd_max}}"
 ExecStart=/usr/local/bin/ipfs daemon --migrate
 Restart=on-failure
 User=ipfs

@@ -26,7 +26,7 @@
 
 - name: install ipfs init service
   become: yes
-  copy:
+  template:
     src: etc/systemd/system/ipfs.service
     dest: /etc/systemd/system/ipfs.service
     owner: root
