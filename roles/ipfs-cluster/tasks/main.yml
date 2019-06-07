@@ -72,10 +72,10 @@
   tags:
     - config
   with_items:
+    - identity.json
     - service.json
     - peerstore
   notify: restart IPFS Cluster
-
 
 - name: reload systemd
   become: yes
