@@ -9,6 +9,8 @@
 # Description:       Runs the ipfs daemon.
 ### END INIT INFO
 
+export IPFS_FD_MAX={{ ipfs_fd_max }}
+
 dir="/usr/local/bin"
 cmd="ipfs daemon"
 user="ipfs"
