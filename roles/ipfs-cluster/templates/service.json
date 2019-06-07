@@ -22,7 +22,7 @@
 {% endfor %}
       ],
       "rebroadcast_interval": "{{ ipfs_cluster_crdt_rebroadcast_interval | default('1m') }}",
-      "peerset_metric": "{{ ipfs_cluster_crdt_peerset_metric | default('pin') }}"
+      "peerset_metric": "{{ ipfs_cluster_crdt_peerset_metric | default('ping') }}"
     },  
     "raft": {
       "init_peerset": [
@@ -62,8 +62,7 @@
 {% endfor %}
       ],
       "extract_headers_path": "/api/v0/version",
-      "extract_headers_ttl": "5m0s",
-
+      "extract_headers_ttl": "5m0s"
     },
     "restapi": {
       "http_listen_multiaddress": "{{ ipfs_cluster_restapi_http_listen_multiaddress | default('/ip4/127.0.0.1/tcp/9094') }}",
@@ -86,12 +85,12 @@
 {% else %}
       "basic_auth_credentials": null,
 {% endif %}
-      "headers": [
-{% for h in ipfs_cluster_restapi_headers | default([]) %}
-          "{{ h }}"{% if not loop.last %},{% endif %}
+      "headers": {
+{% for h in ipfs_cluster_restapi_headers | default({}) %}
+        "{{ h.Name }}": ["{{ h.Value }}"]{% if not loop.last %},{% endif %}
 
 {% endfor %}
-      ],
+      },
       "cors_allowed_origins": [
 {% for c in ipfs_cluster_restapi_cors_allowed_origins | default([])%}
           "{{ c }}"{% if not loop.last %},{% endif %}
@@ -143,7 +142,7 @@
   "monitor": {
     "pubsubmon": {
       "check_interval": "{{ ipfs_cluster_pubsubmon_check_interval | default('15s') }}",
-      "failure_threshold": {{ ipfs_cluster_pubsubmon_failure_threshold | default(3) }},
+      "failure_threshold": {{ ipfs_cluster_pubsubmon_failure_threshold | default(3) }}
     }
   },
   "informer": {
@@ -166,6 +165,32 @@
       "jaeger_agent_endpoint": "{{ ipfs_cluster_tracing_jaeger_agent_endpoint | default('/ip4/0.0.0.0/udp/6831') }}",
       "sampling_prob": {{ ipfs_cluster_tracing_sampling_prob | default('0.3') }},
       "service_name": "{{ ipfs_cluster_tracing_service_name | default('cluster-daemon') }}"
+    }
+  },
+  "datastore": {
+    "badger": {
+      "badger_options": {
+        "dir": "{{ ipfs_cluster_badger_options_dir | default('') }}",
+        "value_dir": "{{ ipfs_cluster_badger_options_value_dir | default('') }}",
+        "sync_writes": {{ ipfs_cluster_badger_options_sync_writes | default(true) | lower }},
+        "table_loading_mode": {{ ipfs_cluster_badger_options_table_loading_mode | default(2) }},
+        "value_log_loading_mode": {{ ipfs_cluster_badger_options_value_log_loading_mode | default(2) }},
+        "num_versions_to_keep": {{ ipfs_cluster_badger_options_num_versions_to_keep | default(1) }},
+        "max_table_size": {{ ipfs_cluster_badger_options_max_table_size | default(67108864) }},
+        "level_size_multiplier": {{ ipfs_cluster_badger_options_level_size_multiplier | default(10) }},
+        "max_levels": {{ ipfs_cluster_badger_options_max_levels | default(7) }},
+        "value_threshold": {{ ipfs_cluster_badger_options_value_threshold | default(32) }},
+        "num_memtables": {{ ipfs_cluster_badger_options_num_memtables | default(5) }},
+        "num_level_zero_tables": {{ ipfs_cluster_badger_options_num_level_zero_tables | default(5) }},
+        "num_level_zero_tables_stall": {{ ipfs_cluster_badger_options_num_level_zero_tables_stall | default(10) }},
+        "level_one_size": {{ ipfs_cluster_badger_options_level_one_size | default(268435456) }},
+        "value_log_file_size": {{ ipfs_cluster_badger_options_value_log_file_size | default(1073741823) }},
+        "value_log_max_entries": {{ ipfs_cluster_badger_options_value_log_max_entries | default(1000000) }},
+        "num_compactors": {{ ipfs_cluster_badger_options_num_compactors | default(2) }},
+        "compact_l_0_on_close": {{ ipfs_cluster_badger_options_compact_l_0_on_close | default(true) | lower }},
+        "read_only": {{ ipfs_cluster_badger_options_read_only | default(false) | lower }},
+        "truncate": {{ ipfs_cluster_badger_options_truncate | default(false) | lower }}
+      }
     }
   }
 }

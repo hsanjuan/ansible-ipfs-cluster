@@ -1,0 +1,4 @@
+{
+  "id": "{{ ipfs_cluster_id }}",
+  "private_key": "{{ ipfs_cluster_private_key }}"
+}

@@ -1,4 +1,4 @@
-{
+        {
   "Identity": {
     "PeerID": "{{ ipfs_peer_id }}",
     "PrivKey": "{{ ipfs_private_key }}"
@@ -106,8 +106,8 @@
     "EnableRelayHop": false,
     "ConnMgr": {
       "Type": "basic",
-      "LowWater": 1500,
-      "HighWater": 2000,
+      "LowWater": {{ ipfs_connmgr_low_water | default(1500) }},
+      "HighWater": {{ ipfs_connmgr_high_water | default(2000) }},
       "GracePeriod": "1m"
     }
   },
