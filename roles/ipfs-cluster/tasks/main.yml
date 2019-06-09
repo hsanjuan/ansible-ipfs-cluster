@@ -40,7 +40,7 @@
 
 - name: install ipfs-cluster init service
   become: yes
-  copy:
+  template:
     src: etc/systemd/system/ipfs-cluster.service
     dest: /etc/systemd/system/ipfs-cluster.service
     owner: root
