@@ -1,51 +1,38 @@
-        {
-  "Identity": {
-    "PeerID": "{{ ipfs_peer_id }}",
-    "PrivKey": "{{ ipfs_private_key }}"
-  },
-  "Datastore": {
-    "BloomFilterSize": {{ ipfs_bloom_filter_size }},
-    "GCPeriod": "1h",
-    "HashOnRead": false,
-    "Spec": {
-      "child": {
-        "path": "badgerds",
-        "syncWrites": true,
-        "type": "badgerds"
-      },
-      "prefix": "badger.datastore",
-      "type": "measure"
-    },
-    "StorageGCWatermark": 90,
-    "StorageMax": "{{ ipfs_storage_max }}"
+{
+  "API": {
+    "HTTPHeaders": {}
   },
   "Addresses": {
+    "API": "{{ ipfs_api_listen | default('/ip4/127.0.0.1/tcp/5001') }}",
+    "Announce": [],
+    "Gateway": "/ip4/127.0.0.1/tcp/8080",
+    "NoAnnounce": [
+      "/ip4/100.64.0.0/ipcidr/10",
+      "/ip4/169.254.0.0/ipcidr/16",
+      "/ip4/172.16.0.0/ipcidr/12",
+      "/ip4/192.0.0.0/ipcidr/24",
+      "/ip4/192.0.0.0/ipcidr/29",
+      "/ip4/192.0.0.8/ipcidr/32",
+      "/ip4/192.0.0.170/ipcidr/32",
+      "/ip4/192.0.0.171/ipcidr/32",
+      "/ip4/192.0.2.0/ipcidr/24",
+      "/ip4/192.168.0.0/ipcidr/16",
+      "/ip4/198.18.0.0/ipcidr/15",
+      "/ip4/198.51.100.0/ipcidr/24",
+      "/ip4/203.0.113.0/ipcidr/24",
+      "/ip4/240.0.0.0/ipcidr/4",
+      "/ip6/100::/ipcidr/64",
+      "/ip6/2001:2::/ipcidr/48",
+      "/ip6/2001:db8::/ipcidr/32",
+      "/ip6/fc00::/ipcidr/7",
+      "/ip6/fe80::/ipcidr/10"
+    ],
     "Swarm": [
       "/ip4/0.0.0.0/tcp/4001",
       "/ip4/0.0.0.0/tcp/4002/ws",
       "/ip6/::/tcp/4001",
       "/ip6/::/tcp/4002/ws"
-    ],
-    "Announce": [],
-    "NoAnnounce": [],
-    "API": "{{ ipfs_api_listen }}",
-    "Gateway": "/ip4/127.0.0.1/tcp/8080"
-  },
-  "Mounts": {
-    "IPFS": "/ipfs",
-    "IPNS": "/ipns",
-    "FuseAllowOther": false
-  },
-  "Discovery": {
-    "MDNS": {
-      "Enabled": false,
-      "Interval": 10
-    }
-  },
-  "Ipns": {
-    "RepublishPeriod": "",
-    "RecordLifetime": "",
-    "ResolveCacheSize": 128
+    ]
   },
   "Bootstrap": [
     "/dnsaddr/bootstrap.libp2p.io/ipfs/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN",
@@ -62,11 +49,46 @@
     "/ip6/2604:a880:800:10::4a:5001/tcp/4001/ipfs/QmSoLV4Bbm51jM9C4gDYZQ9Cy3U6aXMJDAbzgu2fzaDs64",
     "/ip6/2a03:b0c0:0:1010::23:1001/tcp/4001/ipfs/QmSoLer265NRgSp2LA3dPaeykiS1J6DifTC88f5uVQKNAd"
   ],
+  "Datastore": {
+    "BloomFilterSize": {{ ipfs_bloom_filter_size }},
+    "GCPeriod": "1h",
+    "HashOnRead": false,
+    "Spec": {
+      "child": {
+        "path": "badgerds",
+        "syncWrites": true,
+        "truncate": true,
+        "type": "badgerds"
+      },
+      "prefix": "badger.datastore",
+      "type": "measure"
+    },
+    "StorageGCWatermark": 90,
+    "StorageMax": "{{ ipfs_storage_max }}"
+  },
+  "Discovery": {
+    "MDNS": {
+      "Enabled": false,
+      "Interval": 10
+    }
+  },
+  "Experimental": {
+    "FilestoreEnabled": false,
+    "Libp2pStreamMounting": false,
+    "P2pHttpProxy": false,
+    "PreferTLS": false,
+    "QUIC": true,
+    "ShardingEnabled": false,
+    "StrategicProviding": false,
+    "UrlstoreEnabled": false
+  },
   "Gateway": {
+    "APICommands": [],
     "HTTPHeaders": {
       "Access-Control-Allow-Headers": [
         "X-Requested-With",
-        "Range"
+        "Range",
+        "User-Agent"
       ],
       "Access-Control-Allow-Methods": [
         "GET"
@@ -75,16 +97,39 @@
         "*"
       ]
     },
+    "NoFetch": false,
+    "PathPrefixes": [],
     "RootRedirect": "",
-    "Writable": false,
-    "PathPrefixes": []
+    "Writable": false
   },
-  "API": {
-    "HTTPHeaders": null
+  "Identity": {
+    "PeerID": "{{ ipfs_peer_id }}",
+    "PrivKey": "{{ ipfs_private_key }}"
+  },
+  "Ipns": {
+    "RepublishPeriod": "",
+    "RecordLifetime": "",
+    "ResolveCacheSize": 128
+  },
+  "Mounts": {
+    "FuseAllowOther": false,
+    "IPFS": "/ipfs",
+    "IPNS": "/ipns"
+  },
+  "Pubsub": {
+    "DisableSigning": false,
+    "Router": "",
+    "StrictSignatureVerification": false
+  },
+  "Reprovider": {
+    "Interval": "12h",
+    "Strategy": "all"
+  },
+  "Routing": {
+    "Type": "dht"
   },
   "Swarm": {
     "AddrFilters": [
-      "/ip4/10.0.0.0/ipcidr/8",
       "/ip4/100.64.0.0/ipcidr/10",
       "/ip4/169.254.0.0/ipcidr/16",
       "/ip4/172.16.0.0/ipcidr/12",
@@ -98,33 +143,24 @@
       "/ip4/198.18.0.0/ipcidr/15",
       "/ip4/198.51.100.0/ipcidr/24",
       "/ip4/203.0.113.0/ipcidr/24",
-      "/ip4/240.0.0.0/ipcidr/4"
+      "/ip4/240.0.0.0/ipcidr/4",
+      "/ip6/100::/ipcidr/64",
+      "/ip6/2001:2::/ipcidr/48",
+      "/ip6/2001:db8::/ipcidr/32",
+      "/ip6/fc00::/ipcidr/7",
+      "/ip6/fe80::/ipcidr/10"
     ],
-    "DisableBandwidthMetrics": false,
+    "ConnMgr": {
+      "GracePeriod": "20s",
+      "HighWater": {{ ipfs_connmgr_high_water | default(2000) }},
+      "LowWater": {{ ipfs_connmgr_low_water | default(1500) }},
+      "Type": "basic"
+    },
+    "DisableBandwidthMetrics": {{ ipfs_disable_bandwidth_metrics | default(false) | lower }},
     "DisableNatPortMap": true,
     "DisableRelay": false,
-    "EnableRelayHop": false,
-    "ConnMgr": {
-      "Type": "basic",
-      "LowWater": {{ ipfs_connmgr_low_water | default(1500) }},
-      "HighWater": {{ ipfs_connmgr_high_water | default(2000) }},
-      "GracePeriod": "1m"
-    }
-  },
-  "Reprovider": {
-    "Interval": "12h",
-    "Strategy": "all"
-  },
-  "Experimental": {
-    "FilestoreEnabled": false,
-    "Libp2pStreamMounting": false,
-    "ShardingEnabled": false,
-    "UrlstoreEnabled": false
-  },
-  "Routing": {
-    "Type": "dht"
-  },
-  "Pubsub": {
-    "Router": ""
+    "EnableAutoNATService": false,
+    "EnableAutoRelay": false,
+    "EnableRelayHop": false
   }
 }
