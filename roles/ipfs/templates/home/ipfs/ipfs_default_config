@@ -53,6 +53,7 @@
     "BloomFilterSize": {{ ipfs_bloom_filter_size }},
     "GCPeriod": "1h",
     "HashOnRead": false,
+{% if ipfs_use_badger %}
     "Spec": {
       "child": {
         "path": "badgerds",
@@ -63,6 +64,34 @@
       "prefix": "badger.datastore",
       "type": "measure"
     },
+{% else %}
+    "Spec": {
+      "mounts": [
+        {
+          "child": {
+            "path": "blocks",
+            "shardFunc": "/repo/flatfs/shard/v1/next-to-last/2",
+            "sync": true,
+            "type": "flatfs"
+          },
+          "mountpoint": "/blocks",
+          "prefix": "flatfs.datastore",
+          "type": "measure"
+        },
+        {
+          "child": {
+            "compression": "none",
+            "path": "datastore",
+            "type": "levelds"
+          },
+          "mountpoint": "/",
+          "prefix": "leveldb.datastore",
+          "type": "measure"
+        }
+      ],
+      "type": "mount"
+    },
+{% endif %}
     "StorageGCWatermark": 90,
     "StorageMax": "{{ ipfs_storage_max }}"
   },
