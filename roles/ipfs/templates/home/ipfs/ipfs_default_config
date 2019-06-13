@@ -106,7 +106,7 @@
     "Libp2pStreamMounting": false,
     "P2pHttpProxy": false,
     "PreferTLS": false,
-    "QUIC": true,
+    "QUIC": false,
     "ShardingEnabled": false,
     "StrategicProviding": false,
     "UrlstoreEnabled": false
