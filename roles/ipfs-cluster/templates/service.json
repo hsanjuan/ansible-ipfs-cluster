@@ -4,26 +4,22 @@
     "secret": "{{ ipfs_cluster_secret | default('') }}",
     "leave_on_shutdown": {{ ipfs_cluster_leave_on_shutdown | default('false') }},
     "listen_multiaddress": "{{ ipfs_cluster_listen_multiaddress | default('/ip4/0.0.0.0/tcp/9096') }}",
+    "connection_manager": {
+      "high_water": {{ ipfs_cluster_connection_manager_high_water | default(400) }},
+      "low_water": {{ ipfs_cluster_connection_manager_low_water | default(100) }},
+      "grace_period": "{{ ipfs_cluster_connection_manager_grace_period | default('2m0s') }}"
+    },
     "state_sync_interval": "{{ ipfs_cluster_state_sync_interval | default('10m') }}",
     "ipfs_sync_interval": "{{ ipfs_cluster_ipfs_sync_interval | default('130s') }}",
     "replication_factor_min": {{ ipfs_cluster_replication_factor_min | default(-1) }},
     "replication_factor_max": {{ ipfs_cluster_replication_factor_max | default(-1) }},
     "monitor_ping_interval": "{{ ipfs_cluster_monitor_ping_interval | default('30s') }}",
     "peer_watch_interval": "{{ ipfs_cluster_peer_watch_interval | default('10s') }}",
-    "disable_repinning": {{ ipfs_cluster_disable_repinning | default(true) | lower }}
+    "disable_repinning": {{ ipfs_cluster_disable_repinning | default(true) | lower }},
+    "follower_mode": {{ ipfs_cluster_follower_mode | default(false) | lower }}
   },
   "consensus": {
-    "crdt": {
-      "cluster_name": "{{ ipfs_cluster_crdt_cluster_name | default('ipfs-cluster') }}",
-      "trusted_peers": [
-{% for p in ipfs_cluster_crdt_trusted_peers | default([]) %}
-          "{{ p }}"{% if not loop.last %},{% endif %}
-
-{% endfor %}
-      ],
-      "rebroadcast_interval": "{{ ipfs_cluster_crdt_rebroadcast_interval | default('1m') }}",
-      "peerset_metric": "{{ ipfs_cluster_crdt_peerset_metric | default('ping') }}"
-    },  
+{% if (ipfs_cluster_consensus | default("raft")) == "raft" %}
     "raft": {
       "init_peerset": [
 {% for p in ipfs_cluster_raft_init_peerset | default([]) %}
@@ -45,6 +41,19 @@
       "snapshot_threshold": {{ ipfs_cluster_raft_snapshot_threshold | default(4096) }},
       "leader_lease_timeout": "{{ ipfs_cluster_raft_leader_lease_timeout | default('800ms') }}"
     }
+{% else %}
+    "crdt": {
+      "cluster_name": "{{ ipfs_cluster_crdt_cluster_name | default('ipfs-cluster') }}",
+      "trusted_peers": [
+{% for p in ipfs_cluster_crdt_trusted_peers | default([]) %}
+          "{{ p }}"{% if not loop.last %},{% endif %}
+
+{% endfor %}
+      ],
+      "rebroadcast_interval": "{{ ipfs_cluster_crdt_rebroadcast_interval | default('1m') }}",
+      "peerset_metric": "{{ ipfs_cluster_crdt_peerset_metric | default('ping') }}"
+    }
+{% endif %}
   },
   "api": {
     "ipfsproxy": {
@@ -123,10 +132,10 @@
     "ipfshttp": {
       "node_multiaddress": "{{ ipfs_cluster_ipfshttp_node_multiaddress | default('/ip4/127.0.0.1/tcp/5001') }}",
       "connect_swarms_delay": "{{ ipfs_cluster_ipfshttp_connect_swarms_delay | default('30s') }}",
-      "pin_method": "{{ ipfs_cluster_ipfshttp_pin_method | default('refs') }}",
       "ipfs_request_timeout": "{{ ipfs_cluster_ipfshttp_ipfs_request_timeout | default('5m') }}",
       "pin_timeout": "{{ ipfs_cluster_ipfshttp_pin_timeout | default('300h') }}",
-      "unpin_timeout": "{{ ipfs_cluster_ipfshttp_unpin_timeout | default('3h') }}"
+      "unpin_timeout": "{{ ipfs_cluster_ipfshttp_unpin_timeout | default('3h') }}",
+      "unpin_disable": {{ ipfs_cluster_ipfshttp_unpin_disable | default(false) | lower }}
     }
   },
   "pin_tracker": {

@@ -3,7 +3,7 @@ Description=IPFS Cluster Service
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/ipfs-cluster-service daemon --consensus {{ ipfs_cluster_consensus | default('crdt') }}
+ExecStart=/usr/local/bin/ipfs-cluster-service daemon
 Restart=on-failure
 User=ipfs
 
