@@ -1,7 +1,5 @@
 {% for host in groups['ipfs'] %}
 {% if hostvars[host]['ipfs_cluster_peer_addr'] != "" %}
 {{ hostvars[host]['ipfs_cluster_peer_addr'] }}
-{% else %}
-/ip4/{{ hostvars[host]['ansible_default_ipv4']['address'] }}/tcp/9096/ipfs/{{ hostvars[host]['ipfs_cluster_peer_id'] }}
 {% endif %}
 {% endfor %}
