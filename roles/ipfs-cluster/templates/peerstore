@@ -1,5 +1,5 @@
 {% for host in groups['ipfs'] %}
-{% if hostvars[host]['ipfs_cluster_peer_addr'] != "" %}
+{% if hostvars[host]['ipfs_cluster_peer_addr'] is defined %}
 {{ hostvars[host]['ipfs_cluster_peer_addr'] }}
 {% endif %}
 {% endfor %}

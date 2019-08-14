@@ -7,6 +7,11 @@
     "Announce": [],
     "Gateway": "/ip4/127.0.0.1/tcp/8080",
     "NoAnnounce": [
+{% if ipfs_no_announce is defined %}
+  {% for p in ipfs_no_announce %}
+      "{{ p }}"{% if not loop.last %},{% endif %}
+  {% endfor %}
+{% else %}
       "/ip4/100.64.0.0/ipcidr/10",
       "/ip4/169.254.0.0/ipcidr/16",
       "/ip4/172.16.0.0/ipcidr/12",
@@ -26,6 +31,7 @@
       "/ip6/2001:db8::/ipcidr/32",
       "/ip6/fc00::/ipcidr/7",
       "/ip6/fe80::/ipcidr/10"
+{% endif %}
     ],
     "Swarm": [
       "/ip4/0.0.0.0/tcp/4001",
@@ -97,7 +103,7 @@
   },
   "Discovery": {
     "MDNS": {
-      "Enabled": false,
+      "Enabled": {{ ipfs_discovery | default(False) | lower }},
       "Interval": 10
     }
   },
@@ -159,6 +165,11 @@
   },
   "Swarm": {
     "AddrFilters": [
+{% if ipfs_addr_filters is defined %}
+  {% for p in ipfs_addr_filters  %}
+      "{{ p }}"{% if not loop.last %},{% endif %}
+  {% endfor %}
+{% else %}
       "/ip4/10.0.0.0/ipcidr/8",
       "/ip4/100.64.0.0/ipcidr/10",
       "/ip4/169.254.0.0/ipcidr/16",
@@ -179,6 +190,7 @@
       "/ip6/2001:db8::/ipcidr/32",
       "/ip6/fc00::/ipcidr/7",
       "/ip6/fe80::/ipcidr/10"
+{% endif %}
     ],
     "ConnMgr": {
       "GracePeriod": "20s",
