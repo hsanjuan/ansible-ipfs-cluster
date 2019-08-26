@@ -6,11 +6,18 @@
     group: root
     dest: /opt/go-ipfs/{{ipfs_version}}
 
-- name: download and unpack go-ipfs
+- name: download IPFS
+  become: yes
+  get_url:
+    url: "{{ dist_url }}/go-ipfs/{{ipfs_version}}/go-ipfs_{{ipfs_version}}_linux-{{ipfs_arch}}.tar.gz"
+    dest: /opt/go-ipfs/{{ipfs_version}}/go-ipfs.tar.gz
+    timeout: 30
+
+- name: unpack go-ipfs
   become: yes
   unarchive:
     remote_src: yes
-    src: "{{ dist_url }}/go-ipfs/{{ipfs_version}}/go-ipfs_{{ipfs_version}}_linux-{{ipfs_arch}}.tar.gz"
+    src: /opt/go-ipfs/{{ipfs_version}}/go-ipfs.tar.gz
     dest: /opt/go-ipfs/{{ipfs_version}}
     creates: /opt/go-ipfs/{{ipfs_version}}/go-ipfs
   notify: restart IPFS
