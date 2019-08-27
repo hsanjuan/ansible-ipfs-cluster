@@ -15,7 +15,7 @@
     "replication_factor_max": {{ ipfs_cluster_replication_factor_max | default(-1) }},
     "monitor_ping_interval": "{{ ipfs_cluster_monitor_ping_interval | default('30s') }}",
     "peer_watch_interval": "{{ ipfs_cluster_peer_watch_interval | default('10s') }}",
-    "mdns_interval": "{{ ipfs_cluster_mdns_interval | default('10s') }}"
+    "mdns_interval": "{{ ipfs_cluster_mdns_interval | default('10s') }}",
     "disable_repinning": {{ ipfs_cluster_disable_repinning | default(true) | lower }},
     "follower_mode": {{ ipfs_cluster_follower_mode | default(false) | lower }}
   },
