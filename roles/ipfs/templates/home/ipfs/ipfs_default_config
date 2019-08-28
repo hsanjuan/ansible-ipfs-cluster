@@ -36,6 +36,7 @@
     "Swarm": [
       "/ip4/0.0.0.0/tcp/4001",
       "/ip4/0.0.0.0/tcp/4002/ws",
+      "/ip4/0.0.0.0/udp/4001/quic",
       "/ip6/::/tcp/4001",
       "/ip6/::/tcp/4002/ws"
     ]
@@ -112,7 +113,7 @@
     "Libp2pStreamMounting": false,
     "P2pHttpProxy": false,
     "PreferTLS": false,
-    "QUIC": false,
+    "QUIC": true,
     "ShardingEnabled": false,
     "StrategicProviding": false,
     "UrlstoreEnabled": false
