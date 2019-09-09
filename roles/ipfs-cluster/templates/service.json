@@ -85,7 +85,7 @@
       "read_header_timeout": "{{ ipfs_cluster_restapi_read_header_timeout | default('1h') }}",
       "write_timeout": "{{ ipfs_cluster_restapi_write_timeout | default('0s') }}",
       "idle_timeout": "{{ ipfs_cluster_restapi_idle_timeout | default('10m') }}",
-      "http_log_file" "{{ ipfs_cluster_restapi_http_log_file | default('') }}",
+      "http_log_file": "{{ ipfs_cluster_restapi_http_log_file | default('') }}",
 {% if ipfs_cluster_restapi_users | default('') != "" %}
       "basic_auth_credentials": {
 {% for u in ipfs_cluster_restapi_users %}
