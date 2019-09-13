@@ -4,7 +4,7 @@
   },
   "Addresses": {
     "API": "{{ ipfs_api_listen | default('/ip4/127.0.0.1/tcp/5001') }}",
-    "Announce": [],
+    "Announce": {{ ipfs_announce | default([]) | to_nice_json(indent=2) | indent(4) }},
     "Gateway": "/ip4/127.0.0.1/tcp/8080",
     "NoAnnounce": [
 {% if ipfs_no_announce is defined %}
