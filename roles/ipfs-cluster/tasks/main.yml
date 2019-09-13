@@ -26,6 +26,8 @@
   with_items:
     - ipfs-cluster-service
     - ipfs-cluster-ctl
+  notify:
+    - restart IPFS Cluster
 
 - name: link ipfs cluster executables
   become: yes
