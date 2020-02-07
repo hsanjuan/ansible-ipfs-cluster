@@ -6,50 +6,42 @@
     group: root
     dest: /opt/ipfs-cluster/{{ipfs_cluster_version}}
 
-- name: download IPFS Cluster
-  become: yes
-  get_url:
-    url: "{{ dist_url }}/{{ item }}/{{ipfs_cluster_version}}/{{ item }}_{{ipfs_cluster_version}}_linux-{{ipfs_cluster_arch}}.tar.gz"
-    dest: /opt/ipfs-cluster/{{ipfs_cluster_version}}/{{ item }}.tar.gz
-    timeout: 30
-  with_items:
-    - ipfs-cluster-service
-    - ipfs-cluster-ctl
+- name: download and unpack IPFS Cluster
+  when: not ansible_check_mode
+  block:
+    - name: download IPFS Cluster
+      become: yes
+      get_url:
+        url: "{{ dist_url }}/{{ item }}/{{ipfs_cluster_version}}/{{ item }}_{{ipfs_cluster_version}}_linux-{{ipfs_cluster_arch}}.tar.gz"
+        dest: /opt/ipfs-cluster/{{ipfs_cluster_version}}/{{ item }}.tar.gz
+        timeout: 30
+      with_items:
+        - ipfs-cluster-service
+        - ipfs-cluster-ctl
 
-- name: unpack IPFS cluster
-  become: yes
-  unarchive:
-    remote_src: yes
-    src: /opt/ipfs-cluster/{{ipfs_cluster_version}}/{{ item }}.tar.gz
-    dest: /opt/ipfs-cluster/{{ipfs_cluster_version}}/
-    creates: /opt/ipfs-cluster/{{ipfs_cluster_version}}/{{ item }}
-  with_items:
-    - ipfs-cluster-service
-    - ipfs-cluster-ctl
-  notify:
-    - restart IPFS Cluster
+    - name: unpack IPFS cluster
+      become: yes
+      unarchive:
+        remote_src: yes
+        src: /opt/ipfs-cluster/{{ipfs_cluster_version}}/{{ item }}.tar.gz
+        dest: /opt/ipfs-cluster/{{ipfs_cluster_version}}/
+        creates: /opt/ipfs-cluster/{{ipfs_cluster_version}}/{{ item }}
+      with_items:
+        - ipfs-cluster-service
+        - ipfs-cluster-ctl
 
-- name: link ipfs cluster executables
-  become: yes
-  file:
-    state: link
-    owner: root
-    group: root
-    dest: /usr/local/bin/{{ item }}
-    src: /opt/ipfs-cluster/{{ipfs_cluster_version}}/{{ item }}/{{ item }}
-  with_items:
-    - ipfs-cluster-service
-    - ipfs-cluster-ctl
-
-- name: chown ipfs-cluster files
-  become: yes
-  file:
-    state: directory
-    recurse: yes
-    owner: ipfs
-    group: ipfs
-    dest: /opt/ipfs-cluster
-
+    - name: link ipfs cluster executables
+      become: yes
+      file:
+        state: link
+        owner: root
+        group: root
+        dest: /usr/local/bin/{{ item }}
+        src: /opt/ipfs-cluster/{{ipfs_cluster_version}}/{{ item }}/{{ item }}
+      with_items:
+        - ipfs-cluster-service
+        - ipfs-cluster-ctl
+        
 - name: install ipfs-cluster init service
   become: yes
   template:
@@ -107,6 +99,17 @@
     - service.json
   notify: restart IPFS Cluster
 
+- name: set version file (to notify restart on upgrades)
+  become: yes
+  become_user: ipfs
+  copy:
+    content: "{{ ipfs_cluster_version }}"
+    dest: "{{ ipfs_home }}/deployed_version"
+    mode: 0644
+    owner: ipfs
+    group: ipfs
+  notify: restart IPFS Cluster
+  
 - name: copy peerstore
   become: yes
   become_user: ipfs

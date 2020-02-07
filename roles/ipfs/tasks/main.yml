@@ -6,30 +6,33 @@
     group: root
     dest: /opt/go-ipfs/{{ipfs_version}}
 
-- name: download IPFS
-  become: yes
-  get_url:
-    url: "{{ dist_url }}/go-ipfs/{{ipfs_version}}/go-ipfs_{{ipfs_version}}_linux-{{ipfs_arch}}.tar.gz"
-    dest: /opt/go-ipfs/{{ipfs_version}}/go-ipfs.tar.gz
-    timeout: 30
+- name: download and unpack IPFS
+  when: not ansible_check_mode
+  block:
+    - name: download IPFS
+      become: yes
+      get_url:
+        url: "{{ dist_url }}/go-ipfs/{{ipfs_version}}/go-ipfs_{{ipfs_version}}_linux-{{ipfs_arch}}.tar.gz"
+        dest: /opt/go-ipfs/{{ipfs_version}}/go-ipfs.tar.gz
+        timeout: 30
 
-- name: unpack go-ipfs
-  become: yes
-  unarchive:
-    remote_src: yes
-    src: /opt/go-ipfs/{{ipfs_version}}/go-ipfs.tar.gz
-    dest: /opt/go-ipfs/{{ipfs_version}}
-    creates: /opt/go-ipfs/{{ipfs_version}}/go-ipfs
-  notify: restart IPFS
+    - name: unpack go-ipfs
+      become: yes
+      unarchive:
+        remote_src: yes
+        src: /opt/go-ipfs/{{ipfs_version}}/go-ipfs.tar.gz
+        dest: /opt/go-ipfs/{{ipfs_version}}
+        creates: /opt/go-ipfs/{{ipfs_version}}/go-ipfs
+      notify: restart IPFS
 
-- name: link go-ipfs executable
-  become: yes
-  file:
-    state: link
-    owner: root
-    group: root
-    dest: /usr/local/bin/ipfs
-    src: /opt/go-ipfs/{{ipfs_version}}/go-ipfs/ipfs
+    - name: link go-ipfs executable
+      become: yes
+      file:
+        state: link
+        owner: root
+        group: root
+        dest: /usr/local/bin/ipfs
+        src: /opt/go-ipfs/{{ipfs_version}}/go-ipfs/ipfs
 
 - name: install ipfs systemd init service
   become: yes
@@ -84,15 +87,6 @@
     comment: IPFS user
     system: yes
 
-- name: chown ipfs executable
-  become: yes
-  file:
-    state: directory
-    recurse: yes
-    owner: ipfs
-    group: ipfs
-    dest: /opt/go-ipfs
-
 - name: copy default config
   become: yes
   become_user: ipfs
@@ -113,6 +107,17 @@
     creates: "{{ ipfs_home }}/.ipfs/config"
   notify: restart IPFS
 
+- name: set version file (to notify restart on upgrades)
+  become: yes
+  become_user: ipfs
+  copy:
+    content: "{{ ipfs_version }}"
+    dest: "{{ ipfs_home }}/deployed_version"
+    mode: 0644
+    owner: ipfs
+    group: ipfs
+  notify: restart IPFS
+  
 - name: reload systemd
   become: yes
   systemd:
