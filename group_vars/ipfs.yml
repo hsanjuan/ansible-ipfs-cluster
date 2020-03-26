@@ -6,5 +6,4 @@ ipfs_storage_max: 10G
 ipfs_bloom_filter_size: 1048576 # 1MB
 ipfs_api_listen: /ip4/127.0.0.1/tcp/5001
 ipfs_fd_max: 4092
-
-
+ipfs_use_badger: false

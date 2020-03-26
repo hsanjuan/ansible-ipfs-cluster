@@ -61,7 +61,7 @@
     "BloomFilterSize": {{ ipfs_bloom_filter_size }},
     "GCPeriod": "1h",
     "HashOnRead": false,
-{% if ipfs_use_badger %}
+{% if ipfs_use_badger | default(False) %}
     "Spec": {
       "child": {
         "path": "badgerds",
