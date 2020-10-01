@@ -75,7 +75,6 @@
 
 - name: make .ipfs-cluster directory
   become: yes
-  become_user: ipfs
   file:
     state: directory
     mode: 0700
@@ -85,7 +84,6 @@
 
 - name: copy configuration
   become: yes
-  become_user: ipfs
   template:
     src: "{{ item }}"
     dest: "{{ ipfs_home }}/.ipfs-cluster/{{ item }}"
@@ -101,10 +99,9 @@
 
 - name: set version file (to notify restart on upgrades)
   become: yes
-  become_user: ipfs
   copy:
     content: "{{ ipfs_cluster_version }}"
-    dest: "{{ ipfs_home }}/deployed_version"
+    dest: "{{ ipfs_home }}/cluster_deployed_version"
     mode: 0644
     owner: ipfs
     group: ipfs
@@ -112,7 +109,6 @@
   
 - name: copy peerstore
   become: yes
-  become_user: ipfs
   template:
     src: peerstore
     dest: "{{ ipfs_home }}/.ipfs-cluster/peerstore"
