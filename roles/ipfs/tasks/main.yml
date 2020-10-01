@@ -108,7 +108,6 @@
 
 - name: set version file (to notify restart on upgrades)
   become: yes
-  become_user: ipfs
   copy:
     content: "{{ ipfs_version }}"
     dest: "{{ ipfs_home }}/deployed_version"
