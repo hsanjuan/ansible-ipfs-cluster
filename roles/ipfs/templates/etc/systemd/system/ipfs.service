@@ -3,11 +3,16 @@ Description=IPFS daemon
 After=network.target
 
 [Service]
+Type=notify
+User=ipfs
+Group=ipfs
+StateDirectory=ipfs
 LimitNOFILE={{ ipfs_fd_max }}
+MemorySwapMax=0
 Environment="IPFS_FD_MAX={{ ipfs_fd_max}}"
 ExecStart=/usr/local/bin/ipfs daemon --migrate
 Restart=on-failure
-User=ipfs
+KillSignal=SIGINT
 
 [Install]
 WantedBy=multi-user.target
