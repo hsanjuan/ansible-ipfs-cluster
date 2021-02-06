@@ -13,7 +13,7 @@ that fits you best. Otherwise follow these steps:
 
 0. Make sure you have ansible installed: `pip install ansible`.
 1. Fill in `inventory.yml` and place the hostnames of your nodes under the `[ipfs]` group.
-2. Edit the `group_vars/ipfs.yml` and `group_vars/ipfs-cluster.yml` file
+2. Edit the `group_vars/ipfs.yml` and `group_vars/ipfs_cluster.yml` file
    setting the right configuration values, including generating an
    [IPFS Cluster secret](https://cluster.ipfs.io/documentation/guides/security/#the-cluster-secret)
    with `od -vN 32 -An -tx1 /dev/urandom | tr -d ' \n' ; echo`
@@ -24,7 +24,7 @@ that fits you best. Otherwise follow these steps:
 4. Run `make`.
 
 `make` will run ansible for the `ipfs` and the `ipfs-cluster` roles, which
-apply to the `[ipfs]` and `[ipfs-cluster]` inventory group. Upon successful,
+apply to the `[ipfs]` and `[ipfs_cluster]` inventory group. Upon successful,
 both `go-ipfs` and `ipfs-cluster` should be running in the nodes (they are
 installed under `/usr/local/bin` and run by a created `ipfs` system user).
 

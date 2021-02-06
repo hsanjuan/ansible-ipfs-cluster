@@ -29,7 +29,7 @@
     "disable_repinning": {{ ipfs_cluster_disable_repinning | default(true) | lower }},
     "follower_mode": {{ ipfs_cluster_follower_mode | default(false) | lower }},
     "peer_addresses": [
-{% for host in groups['ipfs-cluster'] %}
+{% for host in groups['ipfs_cluster'] %}
 {% if hostvars[host]['ipfs_cluster_peer_addr'] is defined %}
       "{{ hostvars[host]['ipfs_cluster_peer_addr'] }}"{% if not loop.last %},{% endif %}
 
