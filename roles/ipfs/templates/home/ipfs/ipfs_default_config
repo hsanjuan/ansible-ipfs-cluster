@@ -130,7 +130,7 @@
 	"*"
       ]
     },
-    "RootRedirect": "",
+    "RootRedirect": "{{ ipfs_gateway_root_redirect | default('') }}",
     "Writable": false,
     "PathPrefixes": [],
     "APICommands": [],
