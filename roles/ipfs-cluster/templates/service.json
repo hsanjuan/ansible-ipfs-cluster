@@ -18,6 +18,7 @@
       "low_water": {{ ipfs_cluster_connection_manager_low_water | default(100) }},
       "grace_period": "{{ ipfs_cluster_connection_manager_grace_period | default('2m0s') }}"
     },
+    "dial_peer_timeout": "{{ ipfs_cluster_dial_peer_timeout | default('3s') }}",
     "state_sync_interval": "{{ ipfs_cluster_state_sync_interval | default('10m') }}",
     "pin_recover_interval": "{{ ipfs_cluster_pin_recover_internval | default('12m') }}",
     "ipfs_sync_interval": "{{ ipfs_cluster_ipfs_sync_interval | default('130s') }}",
@@ -70,7 +71,12 @@
 {% endfor %}
       ],
       "rebroadcast_interval": "{{ ipfs_cluster_crdt_rebroadcast_interval | default('1m') }}",
-      "peerset_metric": "{{ ipfs_cluster_crdt_peerset_metric | default('ping') }}"
+      "peerset_metric": "{{ ipfs_cluster_crdt_peerset_metric | default('ping') }}",
+      "batching": {
+        "max_batch_size": {{ ipfs_cluster_crdt_max_batch_size | default(0) }},
+        "max_batch_age": "{{ ipfs_cluster_crdt_max_batch_age | default('0s') }}",
+        "max_queue_size": {{ ipfs_cluster_crdt_max_queue_size | default(50000) }}
+      }
     }
 {% endif %}
   },
