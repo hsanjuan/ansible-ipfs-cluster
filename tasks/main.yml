@@ -1,0 +1,7 @@
+- name: Set up ipfs
+  include_tasks: "{{ role_path }}/tasks/ipfs/main.yml"
+  tags: ipfs
+
+- name: Set up ipfs-cluster
+  include_tasks: "{{ role_path }}/tasks/ipfs-cluster/main.yml"
+  tags: ipfs
