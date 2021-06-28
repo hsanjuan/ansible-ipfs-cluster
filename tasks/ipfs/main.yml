@@ -37,7 +37,7 @@
 - name: install ipfs systemd init service
   become: yes
   template:
-    src: etc/systemd/system/ipfs.service
+    src: ipfs/etc/systemd/system/ipfs.service
     dest: /etc/systemd/system/ipfs.service
     owner: root
     group: root
@@ -55,7 +55,7 @@
 - name: install ipfs init service
   become: yes
   template:
-    src: etc/init.d/ipfs
+    src: ipfs/etc/init.d/ipfs
     dest: /etc/init.d/ipfs
     owner: root
     group: root
@@ -90,7 +90,7 @@
 - name: copy default config
   become: yes
   template:
-    src: home/ipfs/ipfs_default_config
+    src: ipfs/home/ipfs/ipfs_default_config
     dest: "{{ ipfs_home }}/ipfs_default_config"
     owner: ipfs
     group: ipfs

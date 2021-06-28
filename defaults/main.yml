@@ -1,4 +1,7 @@
 dist_url: https://dist.ipfs.io
+
+# IPFS
+
 ipfs_version: v0.4.19
 ipfs_arch: amd64
 ipfs_home: /home/ipfs
@@ -12,3 +15,10 @@ ipfs_disk_sync: true
 ipfs_routing: dht
 ipfs_disable_bandthwidth_metrics: false
 ipfs_reprovider_strategy: all
+
+# IPFS Cluster
+
+ipfs_cluster_secret: "use `od  -vN 32 -An -tx1 /dev/urandom | tr -d ' \n' ; echo` to generate this"
+ipfs_cluster_arch: amd64
+ipfs_cluster_version: v0.10.0
+ipfs_cluster_fd_max: 10000
