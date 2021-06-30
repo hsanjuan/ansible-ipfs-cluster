@@ -1,0 +1,15 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-ipfs-cluster"
+      vars:
+        ipfs_enable: true
+        ipfs_peer_id: "123"
+        ipfs_private_key: "private-key-123"
+        ipfs_cluster_enable: true
+        ipfs_cluster_id: "456"
+        ipfs_cluster_private_key: "cluster-private-key-456"
+        ipfs_cluster_peer_addr: "cluster-peer-addr"
+      include_role:
+        name: "ansible-ipfs-cluster"
