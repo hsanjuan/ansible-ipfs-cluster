@@ -69,24 +69,6 @@
   tags:
     - init
 
-
-- name: make ipfs group
-  become: yes
-  group:
-    state: present
-    name: ipfs
-
-- name: make ipfs user
-  become: yes
-  user:
-    state: present
-    name: ipfs
-    group: ipfs
-    shell: /bin/bash
-    home: "{{ ipfs_home }}"
-    comment: IPFS user
-    system: yes
-
 - name: copy default config
   become: yes
   template:
@@ -101,7 +83,7 @@
 - name: init IPFS
   become: yes
   become_user: ipfs
-  command: ipfs init --empty-repo -- {{ ipfs_home }}/ipfs_default_config
+  command: /usr/local/bin/ipfs init --empty-repo -- {{ ipfs_home }}/ipfs_default_config
   args:
     creates: "{{ ipfs_home }}/.ipfs/config"
   notify: restart IPFS
