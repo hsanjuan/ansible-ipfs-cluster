@@ -1,5 +1,0 @@
----
-- hosts: ipfs
-  remote_user: root
-  roles:
-    - ansible-ipfs-cluster
