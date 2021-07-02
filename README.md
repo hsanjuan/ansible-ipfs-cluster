@@ -1,6 +1,6 @@
-# Ansible roles for `go-ipfs` and `ipfs-cluster`
+# Ansible role for `go-ipfs` and `ipfs-cluster`
 
-This repository contains Ansible roles to install and run
+This repository contains an Ansible role to install and run
 [`go-ipfs`](https://github.com/ipfs/go-ipfs) and
 [`IPFS Cluster`](https://github.com/ipfs/ipfs-cluster).
 
