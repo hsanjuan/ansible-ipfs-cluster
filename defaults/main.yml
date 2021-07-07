@@ -1,5 +1,9 @@
-dist_url: https://dist.ipfs.io
-ipfs_version: v0.4.19
+# IPFS
+
+# override to disable go-ipfs setup
+ipfs_enable: true
+
+ipfs_version: v0.9.0
 ipfs_arch: amd64
 ipfs_home: /home/ipfs
 ipfs_storage_max: 10G
@@ -12,3 +16,11 @@ ipfs_disk_sync: true
 ipfs_routing: dht
 ipfs_disable_bandthwidth_metrics: false
 ipfs_reprovider_strategy: all
+
+# IPFS Cluster
+
+# override to disable ipfs cluster setup
+ipfs_cluster_enable: true
+ipfs_cluster_arch: amd64
+ipfs_cluster_version: v0.13.3
+ipfs_cluster_fd_max: 10000

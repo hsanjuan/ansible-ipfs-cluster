@@ -37,7 +37,7 @@
 - name: install ipfs systemd init service
   become: yes
   template:
-    src: etc/systemd/system/ipfs.service
+    src: ipfs/etc/systemd/system/ipfs.service
     dest: /etc/systemd/system/ipfs.service
     owner: root
     group: root
@@ -55,7 +55,7 @@
 - name: install ipfs init service
   become: yes
   template:
-    src: etc/init.d/ipfs
+    src: ipfs/etc/init.d/ipfs
     dest: /etc/init.d/ipfs
     owner: root
     group: root
@@ -69,28 +69,10 @@
   tags:
     - init
 
-
-- name: make ipfs group
-  become: yes
-  group:
-    state: present
-    name: ipfs
-
-- name: make ipfs user
-  become: yes
-  user:
-    state: present
-    name: ipfs
-    group: ipfs
-    shell: /bin/bash
-    home: "{{ ipfs_home }}"
-    comment: IPFS user
-    system: yes
-
 - name: copy default config
   become: yes
   template:
-    src: home/ipfs/ipfs_default_config
+    src: ipfs/home/ipfs/ipfs_default_config
     dest: "{{ ipfs_home }}/ipfs_default_config"
     owner: ipfs
     group: ipfs
@@ -101,7 +83,7 @@
 - name: init IPFS
   become: yes
   become_user: ipfs
-  command: ipfs init --empty-repo -- {{ ipfs_home }}/ipfs_default_config
+  command: /usr/local/bin/ipfs init --empty-repo -- {{ ipfs_home }}/ipfs_default_config
   args:
     creates: "{{ ipfs_home }}/.ipfs/config"
   notify: restart IPFS

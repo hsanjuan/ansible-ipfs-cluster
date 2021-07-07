@@ -45,7 +45,7 @@
 - name: install ipfs-cluster init service
   become: yes
   template:
-    src: etc/systemd/system/ipfs-cluster.service
+    src: ipfs-cluster/etc/systemd/system/ipfs-cluster.service
     dest: /etc/systemd/system/ipfs-cluster.service
     owner: root
     group: root
@@ -61,7 +61,7 @@
 - name: install ipfs-custer init service
   become: yes
   template:
-    src: etc/init.d/ipfs-cluster
+    src: ipfs-cluster/etc/init.d/ipfs-cluster
     dest: /etc/init.d/ipfs-cluster
     owner: root
     group: root
@@ -85,7 +85,7 @@
 - name: copy configuration
   become: yes
   template:
-    src: "{{ item }}"
+    src: "ipfs-cluster/{{ item }}"
     dest: "{{ ipfs_home }}/.ipfs-cluster/{{ item }}"
     mode: 0600
     owner: ipfs
@@ -110,7 +110,7 @@
 - name: copy peerstore
   become: yes
   template:
-    src: peerstore
+    src: ipfs-cluster/peerstore
     dest: "{{ ipfs_home }}/.ipfs-cluster/peerstore"
     mode: 0600
     owner: ipfs
