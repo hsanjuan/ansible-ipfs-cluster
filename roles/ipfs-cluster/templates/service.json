@@ -198,6 +198,9 @@
   },
   "datastore": {
     "badger": {
+      "gc_discard_ratio": {{ ipfs_cluster_badger_gc_discard_ratio | default(0.2) }},
+      "gc_interval": "{{ ipfs_cluster_badger_gc_interval | default('15m0s') }}",
+      "gc_sleep": "{{ ipfs_cluster_badger_gc | default('10s') }}",
       "badger_options": {
         "dir": "{{ ipfs_cluster_badger_options_dir | default('') }}",
         "value_dir": "{{ ipfs_cluster_badger_options_value_dir | default('') }}",
