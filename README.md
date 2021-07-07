@@ -22,8 +22,8 @@ If you are familiar with Ansible, you can just re-use the modules in the way
 that fits you best. Otherwise follow these steps:
 
 - Fill in `inventory.yml` and place the hostnames of your nodes under the `[ipfs]` and `[ipfs-cluster]` groups.
-- Edit the `group_vars/ipfs.yml` and `group_vars/ipfs_cluster.yml` files setting the right configuration values including generating an [IPFS Cluster secret](https://cluster.ipfs.io/documentation/guides/security/#the-cluster-secret) with `od -vN 32 -An -tx1 /dev/urandom | tr -d ' \n' ; echo`
-- Add a file for each hostname (filename is the hostname), to the `host_vars` folder as outlined in [`Host Vars`](#host-vars), containing the necessary host-specific variables (example in the `molecule/default/molecule.yml` file).
+- Create `group_vars/ipfs.yml` and `group_vars/ipfs_cluster.yml` files setting the right configuration values including generating an [IPFS Cluster secret](https://cluster.ipfs.io/documentation/guides/security/#the-cluster-secret) with `od -vN 32 -An -tx1 /dev/urandom | tr -d ' \n' ; echo`. More details in the [Group Vars](#group-vars) section.
+- Add a file for each hostname (filename is the hostname), to the `host_vars` folder as outlined in [Host Vars](#host-vars), containing the necessary host-specific variables (example in the `molecule/default/molecule.yml` file).
 
 Upon successful execution, both `go-ipfs` and `ipfs-cluster` should be running in the nodes (they are installed under `/usr/local/bin` and run by a created `ipfs` system user).
 
@@ -95,13 +95,13 @@ You can also define `ipfs_cluster_peername` to name your cluster peer for convin
 
 The `group_vars` file can be used to set variables to control the common configuration for of all ipfs and ipfs-cluster peers.
 
-Edit the `ipfs.yml` file in this folder and set the appropiate values for the variables.
+Create `ipfs.yml` and `ipfs-cluster.yml` files in this folder and set the appropiate values for the variables.
 
 Note the cluster `service.json` template can be fully customized by defining the appropiate variables, and otherwise they will take sensisble defaults.
 
 ## Running the tests
 
-Assumes you have a working molecule setup with docker, running `molecule test` should spin up a docker container and execute the test playbook declared in `molecule/default/converge.yml`.
+Assumes you have a working molecule setup with docker, running `molecule test` should spin up a docker container and execute the test playbook declared in `molecule/default/converge.yml` as well as the verifications in `molecule/default/verify.yml`
 
 ```console
 python 3 -m molecule test
