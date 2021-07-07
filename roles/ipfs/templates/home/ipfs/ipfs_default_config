@@ -207,7 +207,9 @@
     "ShardingEnabled": false,
     "StrategicProviding": false,
     "UrlstoreEnabled": false,
-    "GraphsyncEnabled": false
+    "GraphsyncEnabled": false,
+    "AcceleratedDHTClient": {{ ipfs_experimental_accelerated_dht_client | default(False) | lower }},
+    "StrategicProviding": {{ ipfs_experimental_strategic_providing | default(False) | lower }}
   },
   "Plugins": {
     "Plugins": null

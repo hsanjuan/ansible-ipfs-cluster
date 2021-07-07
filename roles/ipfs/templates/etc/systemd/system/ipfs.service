@@ -7,6 +7,7 @@ Type=notify
 User=ipfs
 Group=ipfs
 StateDirectory=ipfs
+TimeoutStartSec=10800
 LimitNOFILE={{ ipfs_fd_max }}
 MemorySwapMax=0
 Environment="IPFS_FD_MAX={{ ipfs_fd_max}}"
