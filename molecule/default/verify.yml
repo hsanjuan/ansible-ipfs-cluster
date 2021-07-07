@@ -1,10 +1,40 @@
 ---
-# This is an example playbook to execute Ansible tests.
+# Validates if ipfs and ipfs-cluster are installed and running
 
 - name: Verify
-  hosts: all
+  hosts: instance-1
   gather_facts: false
   tasks:
-  - name: Example assertion
-    assert:
-      that: true
+    - name: Check if IPFS is installed
+      package:
+        name: ipfs
+        state: present
+      check_mode: true
+      register: install_ipfs
+      failed_when: (install_ipfs is changed) or (install_ipfs is failed)
+
+    - name: Check if IPFS service is running
+      service:
+        name: ipfs
+        state: started
+        enabled: true
+      check_mode: true
+      register: service_ipfs
+      failed_when: (service_ipfs is changed) or (service_ipfs is failed)
+
+    - name: Check if IPFS Cluster is installed
+      package:
+        name: ipfs-cluster
+        state: present
+      check_mode: true
+      register: install_ipfs_cluster
+      failed_when: (install_ipfs_cluster is changed) or (install_ipfs_cluster is failed)
+
+    - name: Check if IPFS Cluster service is running
+      service:
+        name: ipfs-cluster
+        state: started
+        enabled: true
+      check_mode: true
+      register: service_ipfs_cluster
+      failed_when: (service_ipfs_cluster is changed) or (service_ipfs_cluster is failed)

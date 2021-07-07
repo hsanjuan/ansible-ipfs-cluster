@@ -6,13 +6,18 @@ driver:
 platforms:
   - name: instance-1
     image: centos:8
-    command: /sbin/init
+    command: "/usr/sbin/init"
+    volumes:
+    - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
     privileged: True
     groups:
       - ipfs_cluster
 provisioner:
   name: ansible
   inventory:
+    group_vars:
+      ipfs_cluster:
+        ipfs_cluster_secret: "81643eba8fedcc4aa31fef6459e8b852a97c3cf3d0489158cb85166e8255e912"
     host_vars:
       instance-1:
         ipfs_peer_id: "QmUdZCogpVVrPMxdPHhtT2KuUuxNVi1uLb7UC4HwHBqejb"

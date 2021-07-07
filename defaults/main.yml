@@ -3,7 +3,7 @@
 # override to disable go-ipfs setup
 ipfs_enable: true
 
-ipfs_version: v0.4.19
+ipfs_version: v0.9.0
 ipfs_arch: amd64
 ipfs_home: /home/ipfs
 ipfs_storage_max: 10G
@@ -21,8 +21,6 @@ ipfs_reprovider_strategy: all
 
 # override to disable ipfs cluster setup
 ipfs_cluster_enable: true
-
-ipfs_cluster_secret: "use `od  -vN 32 -An -tx1 /dev/urandom | tr -d ' \n' ; echo` to generate this"
 ipfs_cluster_arch: amd64
-ipfs_cluster_version: v0.10.0
+ipfs_cluster_version: v0.13.3
 ipfs_cluster_fd_max: 10000
