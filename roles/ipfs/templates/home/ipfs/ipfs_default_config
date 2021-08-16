@@ -7,7 +7,7 @@
     "StorageMax": "{{ ipfs_storage_max }}",
     "StorageGCWatermark": 90,
     "BloomFilterSize": {{ ipfs_bloom_filter_size }},
-    "GCPeriod": "1h",
+    "GCPeriod": "{{ ipfs_gc_period | default('1h') }}",
     "HashOnRead": false,
 {% if ipfs_use_badger | default(False) %}
     "Spec": {
@@ -144,7 +144,7 @@
   "Swarm": {
     "DisableBandwidthMetrics": {{ ipfs_disable_bandwidth_metrics | default(False) | lower }},
     "DisableNatPortMap": true,
-    "DisableRelay": false,
+    "DisableRelay": {{ ipfs_disable_relay | default(False) | lower }},
     "EnableAutoNATService": false,
     "EnableAutoRelay": false,
     "EnableRelayHop": false,
