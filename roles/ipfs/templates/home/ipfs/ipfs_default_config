@@ -5,7 +5,7 @@
   },
   "Datastore": {
     "StorageMax": "{{ ipfs_storage_max }}",
-    "StorageGCWatermark": 90,
+    "StorageGCWatermark": {{ ipfs_gc_watermwark | default(90) }},
     "BloomFilterSize": {{ ipfs_bloom_filter_size }},
     "GCPeriod": "{{ ipfs_gc_period | default('1h') }}",
     "HashOnRead": false,
