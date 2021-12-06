@@ -168,7 +168,9 @@
   "pin_tracker": {
     "stateless": {
       "max_pin_queue_size": {{ ipfs_cluster_stateless_max_pin_queue_size | default(1000000) }},
-      "concurrent_pins": {{ ipfs_cluster_stateless_concurrent_pins | default(10) }}
+      "concurrent_pins": {{ ipfs_cluster_stateless_concurrent_pins | default(10) }},
+      "priority_pin_max_age" : "{{ ipfs_cluster_stateless_priority_pin_max_age | default('24h') }}",
+      "priority_pin_max_retries" : {{ ipfs_cluster_stateless_priority_pin_max_retries | default(5) }}
     }
   },
   "monitor": {
@@ -181,6 +183,15 @@
     "disk": {
       "metric_ttl": "{{ ipfs_cluster_informer_disk_metric_ttl | default('5m') }}",
       "metric_type": "{{ ipfs_cluster_informer_disk_metric_type | default('freespace') }}"
+    },
+    "tags": {
+      "metric_ttl": "30s",
+      "tags": {{ ipfs_cluster_informer_tags_tags | default({}) | to_json }}
+    }
+  },
+  "allocator": {
+    "balanced": {
+      "allocate_by": {{ ipfs_cluster_allocator_balanced_allocate_by | default(["freespace"]) | to_json  }}
     }
   },
   "observations": {
