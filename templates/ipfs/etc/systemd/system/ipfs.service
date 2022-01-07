@@ -3,6 +3,7 @@ Description=IPFS daemon
 After=network.target
 
 [Service]
+Type=notify
 User=ipfs
 Group=ipfs
 StateDirectory=ipfs
