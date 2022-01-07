@@ -205,8 +205,8 @@
     "Peers":[
       {% for node in ipfs_peering_nodes  %}
       {
-        "ID": node.id,
-        "Addrs": node.addrs
+        "ID": {{ node.id }},
+        "Addrs": {{ node.addrs | to_json }}
       }{% if not loop.last %},{% endif %}
       {% endfor %}
     ]
