@@ -17,6 +17,11 @@ ipfs_routing: dht
 ipfs_disable_bandthwidth_metrics: false
 ipfs_reprovider_strategy: all
 
+# If you find IPFS uses too much RAM, you can
+# limit the max amount in the systemd service
+# file by setting this to something suitable:
+# ipfs_memory_max: "1.5G"
+
 # IPFS Cluster
 
 # override to disable ipfs cluster setup
