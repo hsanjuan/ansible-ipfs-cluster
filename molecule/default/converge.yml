@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-ipfs-cluster"
+      vars:
+        ipfs_enable: true
+        ipfs_cluster_enable: true
+      include_role:
+        name: "ansible-ipfs-cluster"

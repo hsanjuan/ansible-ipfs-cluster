@@ -9,6 +9,9 @@ Group=ipfs
 StateDirectory=ipfs
 TimeoutStartSec=10800
 LimitNOFILE={{ ipfs_fd_max }}
+{% if ipfs_memory_max is defined %}
+MemoryMax={{ ipfs_memory_max }}
+{% endif %}
 MemorySwapMax=0
 Environment="IPFS_FD_MAX={{ ipfs_fd_max}}"
 ExecStart=/usr/local/bin/ipfs daemon --migrate {%- if ipfs_enable_gc | default(False) %} --enable-gc{% endif %}
