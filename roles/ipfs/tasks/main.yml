@@ -106,6 +106,34 @@
     creates: "{{ ipfs_home }}/.ipfs/config"
   notify: restart IPFS
 
+- name: download and unpack NOpfs
+  when: not ansible_check_mode
+  block:
+    - name: create plugins folder
+      become: yes
+      file:
+        state: directory
+        owner: ipfs
+        group: ipfs
+        dest: "{{ ipfs_home }}/.ipfs/plugins"
+
+    - name: download and unpack nopfs
+      when: not ansible_check_mode
+      become: yes
+      unarchive:
+        remote_src: yes
+        src: "https://github.com/ipfs-shipyard/nopfs/releases/download/nopfs-kubo-plugin/{{nopfs_version}}/nopfs-kubo-plugin_{{nopfs_version}}_linux_{{ipfs_arch}}.tar.gz"
+        dest: "{{ ipfs_home }}/.ipfs/plugins/"
+        include:
+          - nopfs-kubo-plugin/nopfs-kubo-plugin
+        extra_opts:
+          - "--strip-components=1"
+        owner: ipfs
+        group: ipfs
+      notify: restart IPFS
+  tags:
+    - nopfs
+
 - name: set version file (to notify restart on upgrades)
   become: yes
   copy:
@@ -115,7 +143,7 @@
     owner: ipfs
     group: ipfs
   notify: restart IPFS
-  
+
 - name: reload systemd
   become: yes
   systemd:
