@@ -185,12 +185,7 @@
       "Security": {},
       "Multiplexers": {}
     },
-    "ConnMgr": {
-      "GracePeriod": "20s",
-      "HighWater": {{ ipfs_connmgr_high_water | default(2000) }},
-      "LowWater": {{ ipfs_connmgr_low_water | default(1500) }},
-      "Type": "basic"
-    },
+    "ConnMgr": {},
     "ResourceMgr": {
       "MaxMemory": "{{ ipfs_resourcemgr_max_memory | default(0) }}"
     }
