@@ -84,8 +84,12 @@
       "/ip4/0.0.0.0/tcp/4001",
       "/ip4/0.0.0.0/tcp/4002/ws",
       "/ip4/0.0.0.0/udp/4001/quic",
+      "/ip4/0.0.0.0/udp/4001/quic-v1",
+      "/ip4/0.0.0.0/udp/4001/quic-v1/webtransport",
       "/ip6/::/tcp/4001",
       "/ip6/::/udp/4001/quic",
+      "/ip6/::/udp/4001/quic-v1",
+      "/ip6/::/udp/4001/quic-v1/webtransport",
       "/ip6/::/tcp/4002/ws"
     ]
   },
@@ -101,7 +105,9 @@
     }
   },
   "Routing": {
-    "Type": "{{ ipfs_routing | default('dht') }}"
+    "AcceleratedDHTClient": {{ ipfs_accelerated_dht_client | default(False) | lower }},
+    "Routers": null,
+    "Methods": null
   },
   "Ipns": {
     "RepublishPeriod": "",
@@ -131,28 +137,17 @@
       ]
     },
     "RootRedirect": "{{ ipfs_gateway_root_redirect | default('') }}",
-    "Writable": false,
     "PathPrefixes": [],
     "APICommands": [],
     "NoFetch": false,
     "NoDNSLink": false,
+    "DeserializedResponses": null,
     "PublicGateways": {{ ipfs_public_gateways | default(None) | to_nice_json(indent=2) | indent(6) }}
   },
   "API": {
     "HTTPHeaders": {}
   },
   "Swarm": {
-    "DisableBandwidthMetrics": {{ ipfs_disable_bandwidth_metrics | default(False) | lower }},
-    "DisableNatPortMap": true,
-    "DisableRelay": {{ ipfs_disable_relay | default(False) | lower }},
-    "EnableAutoNATService": false,
-    "EnableAutoRelay": false,
-    "EnableRelayHop": false,
-    "Transports": {
-      "Network": {},
-      "Security": {},
-      "Multiplexers": {}
-    },
     "AddrFilters": [
 {% if ipfs_addr_filters is defined %}
   {% for p in ipfs_addr_filters  %}
@@ -181,11 +176,23 @@
       "/ip6/fe80::/ipcidr/10"
 {% endif %}
     ],
+    "DisableBandwidthMetrics": {{ ipfs_disable_bandwidth_metrics | default(False) | lower }},
+    "DisableNatPortMap": true,
+    "RelayClient": {},
+    "RelayService": {},
+    "Transports": {
+      "Network": {},
+      "Security": {},
+      "Multiplexers": {}
+    },
     "ConnMgr": {
       "GracePeriod": "20s",
       "HighWater": {{ ipfs_connmgr_high_water | default(2000) }},
       "LowWater": {{ ipfs_connmgr_low_water | default(1500) }},
       "Type": "basic"
+    },
+    "ResourceMgr": {
+      "MaxMemory": "{{ ipfs_resourcemgr_max_memory | default(0) }}"
     }
   },
   "AutoNAT": {},
@@ -196,25 +203,35 @@
   "Peering": {
     "Peers": null
   },
+  "DNS": {
+    "Resolvers": {}
+  },
+  "Migration": {
+    "DownloadSources": [],
+    "Keep": ""
+  },
+  "Provider": {
+    "Strategy": ""
+  },
   "Reprovider": {
     "Interval": "12h",
     "Strategy": "{{ ipfs_reprovider_strategy | default('all') }}"
   },
   "Experimental": {
     "FilestoreEnabled": false,
-    "Libp2pStreamMounting": false,
-    "P2pHttpProxy": false,
-    "ShardingEnabled": false,
-    "StrategicProviding": false,
     "UrlstoreEnabled": false,
     "GraphsyncEnabled": false,
-    "AcceleratedDHTClient": {{ ipfs_experimental_accelerated_dht_client | default(False) | lower }},
-    "StrategicProviding": {{ ipfs_experimental_strategic_providing | default(False) | lower }}
+    "Libp2pStreamMounting": false,
+    "P2pHttpProxy": false,
+    "StrategicProviding": {{ ipfs_experimental_strategic_providing | default(False) | lower }},
+    "OptimisticProvide": false,
+    "OptimisticProvideJobsPoolSize": 0
   },
   "Plugins": {
     "Plugins": null
   },
   "Pinning": {
-    "RemoteServices": null
-  }
+    "RemoteServices": {}
+  },
+  "Internal": {}
 }
