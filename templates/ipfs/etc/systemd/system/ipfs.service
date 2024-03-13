@@ -14,7 +14,7 @@ MemoryMax={{ ipfs_memory_max }}
 {% endif %}
 MemorySwapMax=0
 Environment="IPFS_FD_MAX={{ ipfs_fd_max}}"
-ExecStart=/usr/local/bin/ipfs daemon --migrate {%- if ipfs_enable_gc | default(False) %} --enable-gc{% endif %}
+ExecStart=/usr/local/bin/ipfs daemon --migrate {%- if ipfs_enable_gc | default(False) %} --enable-gc{% endif %} {%- if ipfs_routing | default(False) %} --routing{% ipfs_routing %}
 
 Restart=on-failure
 KillSignal=SIGINT
