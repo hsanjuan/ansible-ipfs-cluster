@@ -1,0 +1,26 @@
+- name: make ipfs group
+  become: yes
+  group:
+    state: present
+    name: ipfs
+
+- name: make ipfs user
+  become: yes
+  user:
+    state: present
+    name: ipfs
+    group: ipfs
+    shell: /bin/bash
+    home: "{{ ipfs_home }}"
+    comment: IPFS user
+    system: yes
+
+- name: Set up ipfs
+  include_tasks: "{{ role_path }}/tasks/ipfs/main.yml"
+  tags: ipfs
+  when: ipfs_enable | bool
+
+- name: Set up ipfs-cluster
+  include_tasks: "{{ role_path }}/tasks/ipfs-cluster/main.yml"
+  tags: ipfs-cluster
+  when: ipfs_cluster_enable | bool

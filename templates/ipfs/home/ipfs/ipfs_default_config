@@ -196,7 +196,18 @@
     "Router": ""
   },
   "Peering": {
+    {% if ipfs_peering_nodes is defined and ipfs_peering_nodes|length %}
+    "Peers":[
+      {% for node in ipfs_peering_nodes  %}
+      {
+        "ID": {{ node.id }},
+        "Addrs": {{ node.addrs | to_json }}
+      }{% if not loop.last %},{% endif %}
+      {% endfor %}
+    ]
+    {% else %}
     "Peers": null
+    {% endif %}
   },
   "DNS": {
     "Resolvers": {}

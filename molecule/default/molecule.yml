@@ -1,0 +1,29 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: instance-1
+    image: centos:8
+    command: "/usr/sbin/init"
+    volumes:
+    - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+    privileged: True
+    groups:
+      - ipfs_cluster
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      ipfs_cluster:
+        ipfs_cluster_secret: "81643eba8fedcc4aa31fef6459e8b852a97c3cf3d0489158cb85166e8255e912"
+    host_vars:
+      instance-1:
+        ipfs_peer_id: "12D3KooWH31GCY8gjo8n2ucpcqoXzWPWe1jXzLZYKxyBM8WpcVLU"
+        ipfs_private_key: "CAESQJ0rgc303IwfPtdz6VfR8sHEG13FOrFH3qE8a1jCiz3zaz64d7f/r14AUMxdGtDpan4mlRxpG1XIim8oRydnFKE="
+        ipfs_cluster_id: "12D3KooWJg9EybwXzoHV182Zdn7ibftJxZtqS66Boim8fd6ccCw4"
+        ipfs_cluster_private_key: "CAESQCnWLxgdpNdMwCHOker/ozlR3alTULffh3PIvZECcQCYg53rUlp1Gst4JUNXkPzQrCYH7xNpsrJZKFG7JtzjiJM="
+        ipfs_cluster_peer_addr: "/dns4/node01/tcp/9096/ipfs/QmUdZCogpVVrPMxdPHhtT2KuUuxNVi1uLb7UC4HwHBqejb"
+verifier:
+  name: ansible

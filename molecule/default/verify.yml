@@ -1,0 +1,25 @@
+---
+# Validates if ipfs and ipfs-cluster are installed and running
+
+- name: Verify
+  hosts: instance-1
+  gather_facts: false
+  tasks:
+  
+    - name: Check if IPFS service is running
+      service:
+        name: ipfs
+        state: started
+        enabled: true
+      check_mode: true
+      register: service_ipfs
+      failed_when: (service_ipfs is changed) or (service_ipfs is failed)
+
+    - name: Check if IPFS Cluster service is running
+      service:
+        name: ipfs-cluster
+        state: started
+        enabled: true
+      check_mode: true
+      register: service_ipfs_cluster
+      failed_when: (service_ipfs_cluster is changed) or (service_ipfs_cluster is failed)
