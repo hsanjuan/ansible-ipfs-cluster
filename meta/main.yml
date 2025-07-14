@@ -1,6 +1,6 @@
 galaxy_info:
   author: Hector Sanjuan
-  description: Ansible role to install and run go-ipfs and IPFS Cluster
+  description: Ansible role to install and run kubo and IPFS Cluster
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value

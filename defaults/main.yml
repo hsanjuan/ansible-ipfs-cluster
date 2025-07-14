@@ -1,6 +1,6 @@
 # IPFS
 
-# override to disable go-ipfs setup
+# override to disable kubo setup
 ipfs_enable: true
 
 ipfs_version: v0.9.0

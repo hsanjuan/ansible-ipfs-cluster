@@ -1,7 +1,7 @@
-# Ansible role for `go-ipfs` and `ipfs-cluster`
+# Ansible role for `kubo` and `ipfs-cluster`
 
 This repository contains an Ansible role to install and run
-[`go-ipfs`](https://github.com/ipfs/go-ipfs) and
+[`kubo`](ihttps://github.com/ipfs/kubo) and
 [`IPFS Cluster`](https://github.com/ipfs/ipfs-cluster).
 
 They include a Systemd service file both.
@@ -25,7 +25,7 @@ that fits you best. Otherwise follow these steps:
 - Create `group_vars/ipfs.yml` and `group_vars/ipfs_cluster.yml` files setting the right configuration values including generating an [IPFS Cluster secret](https://cluster.ipfs.io/documentation/guides/security/#the-cluster-secret) with `od -vN 32 -An -tx1 /dev/urandom | tr -d ' \n' ; echo`. More details in the [Group Vars](#group-vars) section.
 - Add a file for each hostname (filename is the hostname), to the `host_vars` folder as outlined in [Host Vars](#host-vars), containing the necessary host-specific variables (example in the `molecule/default/molecule.yml` file).
 
-Upon successful execution, both `go-ipfs` and `ipfs-cluster` should be running in the nodes (they are installed under `/usr/local/bin` and run by a created `ipfs` system user).
+Upon successful execution, both `kubo` and `ipfs-cluster` should be running in the nodes (they are installed under `/usr/local/bin` and run by a created `ipfs` system user).
 
 You can use `systemctl status ipfs` and `systemctl status ipfs-cluster` to check the status of the new services.
 

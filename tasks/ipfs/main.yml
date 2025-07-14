@@ -1,10 +1,10 @@
-- name: create download folder for go-ipfs
+- name: create download folder for kubo
   become: yes
   file:
     state: directory
     owner: root
     group: root
-    dest: /opt/go-ipfs/{{ipfs_version}}
+    dest: /opt/kubo/{{ipfs_version}}
 
 - name: download and unpack IPFS
   when: not ansible_check_mode
@@ -12,27 +12,27 @@
     - name: download IPFS
       become: yes
       get_url:
-        url: "{{ dist_url }}/go-ipfs/{{ipfs_version}}/go-ipfs_{{ipfs_version}}_linux-{{ipfs_arch}}.tar.gz"
-        dest: /opt/go-ipfs/{{ipfs_version}}/go-ipfs.tar.gz
+        url: "{{ dist_url }}/kubo/{{ipfs_version}}/kubo_{{ipfs_version}}_linux-{{ipfs_arch}}.tar.gz"
+        dest: /opt/kubo/{{ipfs_version}}/kubo.tar.gz
         timeout: 30
 
-    - name: unpack go-ipfs
+    - name: unpack kubo
       become: yes
       unarchive:
         remote_src: yes
-        src: /opt/go-ipfs/{{ipfs_version}}/go-ipfs.tar.gz
-        dest: /opt/go-ipfs/{{ipfs_version}}
-        creates: /opt/go-ipfs/{{ipfs_version}}/go-ipfs
+        src: /opt/kubo/{{ipfs_version}}/kubo.tar.gz
+        dest: /opt/kubo/{{ipfs_version}}
+        creates: /opt/kubo/{{ipfs_version}}/kubo
       notify: restart IPFS
 
-    - name: link go-ipfs executable
+    - name: link kubo executable
       become: yes
       file:
         state: link
         owner: root
         group: root
         dest: /usr/local/bin/ipfs
-        src: /opt/go-ipfs/{{ipfs_version}}/go-ipfs/ipfs
+        src: /opt/kubo/{{ipfs_version}}/kubo/ipfs
 
 - name: install ipfs systemd init service
   become: yes
@@ -88,34 +88,6 @@
     creates: "{{ ipfs_home }}/.ipfs/config"
   notify: restart IPFS
 
-- name: download and unpack NOpfs
-  when: not ansible_check_mode
-  block:
-    - name: create plugins folder
-      become: yes
-      file:
-        state: directory
-        owner: ipfs
-        group: ipfs
-        dest: "{{ ipfs_home }}/.ipfs/plugins"
-
-    - name: download and unpack nopfs
-      when: not ansible_check_mode
-      become: yes
-      unarchive:
-        remote_src: yes
-        src: "https://github.com/ipfs-shipyard/nopfs/releases/download/nopfs-kubo-plugin/{{nopfs_version}}/nopfs-kubo-plugin_{{nopfs_version}}_linux_{{ipfs_arch}}.tar.gz"
-        dest: "{{ ipfs_home }}/.ipfs/plugins/"
-        include:
-          - nopfs-kubo-plugin/nopfs-kubo-plugin
-        extra_opts:
-          - "--strip-components=1"
-        owner: ipfs
-        group: ipfs
-      notify: restart IPFS
-  tags:
-    - nopfs
-
 - name: set version file (to notify restart on upgrades)
   become: yes
   copy:
@@ -125,7 +97,7 @@
     owner: ipfs
     group: ipfs
   notify: restart IPFS
-
+  
 - name: reload systemd
   become: yes
   systemd:
