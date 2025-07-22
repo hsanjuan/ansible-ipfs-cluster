@@ -1,7 +1,7 @@
-# Ansible roles for `go-ipfs` and `ipfs-cluster`
+# Ansible roles for `kubo` and `ipfs-cluster`
 
 This repository contains Ansible roles to install and run
-[`go-ipfs`](https://github.com/ipfs/go-ipfs) and
+[`Kubo`](https://github.com/ipfs/kubo) and
 [`IPFS Cluster`](https://github.com/ipfs/ipfs-cluster).
 
 They include a Systemd service file both.
@@ -25,7 +25,7 @@ that fits you best. Otherwise follow these steps:
 
 `make` will run ansible for the `ipfs` and the `ipfs-cluster` roles, which
 apply to the `[ipfs]` and `[ipfs_cluster]` inventory group. Upon successful,
-both `go-ipfs` and `ipfs-cluster` should be running in the nodes (they are
+both `kubo` and `ipfs-cluster` should be running in the nodes (they are
 installed under `/usr/local/bin` and run by a created `ipfs` system user).
 
 You can use `systemctl status ipfs` and `systemctl status ipfs-cluster` to
